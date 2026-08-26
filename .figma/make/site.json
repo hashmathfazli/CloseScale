@@ -1,0 +1,11 @@
+{
+  "title": "CRM",
+  "description": "This user-friendly web application enhances personal organization and productivity, offering a visually appealing interface tailored for seamless navigation and engagement.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
