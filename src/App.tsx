@@ -61,20 +61,20 @@ const SALES_REPS = ["Ishara Fonseka", "Nadeesha Perera", "Ruwani Peris", "Kamal 
 const LEADS = [
   { id: 1, name: "Meridian Holdings",  contact: "Hashmath Fazli",  email: "hashmath@meridian.io",    phone: "+94 77 234 5678", industry: "IT Services",    source: "Referral",       value: "$124,000", status: "New",        assigned: "Yaqoob S.", rep: "Ishara Fonseka",    date: "Aug 12", priority: "High"   },
   { id: 2, name: "Vantage Systems",    contact: "Leo Chen",         email: "leo.chen@vantage.sg",     phone: "+65 81 234 5678", industry: "Cybersecurity",  source: "Cold Outreach",  value: "$87,500",  status: "Contacted",  assigned: "Yaqoob S.", rep: "Nadeesha Perera",  date: "Aug 10", priority: "Medium" },
-  { id: 3, name: "Orbit Retail Ltd",  contact: "Michelle Tran",    email: "m.tran@orbitretail.com",  phone: "+60 12 345 6789", industry: "Retail",         source: "Website",        value: "$210,000", status: "Contacted",  assigned: "Yaqoob S.", rep: "Ishara Fonseka",   date: "Aug 8",  priority: "Medium" },
+  { id: 3, name: "Orbit Retail Ltd",  contact: "Michelle Tran",    email: "m.tran@orbitretail.com",  phone: "+60 12 345 6789", industry: "Retail",         source: "Website",        value: "$210,000", status: "Assessment", assigned: "Yaqoob S.", rep: "Ishara Fonseka",   date: "Aug 8",  priority: "Medium" },
   { id: 4, name: "Apex Dynamics",     contact: "Farhan Ali",       email: "farhan@apexdyn.ae",       phone: "+971 50 123 4567", industry: "Manufacturing", source: "Trade Show",     value: "$45,000",  status: "Assessment", assigned: "Yaqoob S.", rep: "Ruwani Peris",     date: "Aug 5",  priority: "Low"    },
   { id: 5, name: "CloudBridge Inc.",  contact: "Ananya Roy",       email: "ananya@cloudbridge.io",   phone: "+91 98 765 4321", industry: "Cloud Services", source: "Partner",        value: "$330,000", status: "Assessment", assigned: "Yaqoob S.", rep: "Nadeesha Perera",  date: "Aug 3",  priority: "High"   },
-  { id: 6, name: "NexGen Pharma",     contact: "Ravidu Pasan",     email: "rpasan@nexgen.lk",        phone: "+94 71 345 6789", industry: "Healthcare",     source: "Referral",       value: "$178,000", status: "Contacted",  assigned: "Yaqoob S.", rep: "Ishara Fonseka",   date: "Jul 30", priority: "Medium" },
+  { id: 6, name: "NexGen Pharma",     contact: "Ravidu Pasan",     email: "rpasan@nexgen.lk",        phone: "+94 71 345 6789", industry: "Healthcare",     source: "Referral",       value: "$178,000", status: "Assessment", assigned: "Yaqoob S.", rep: "Ishara Fonseka",   date: "Jul 30", priority: "Medium" },
   { id: 7, name: "Solaris Energy",    contact: "Senula Silva",     email: "senula@solaris.lk",       phone: "+94 76 543 2109", industry: "Energy",         source: "Inbound",        value: "$95,000",  status: "Closed",     assigned: "Yaqoob S.", rep: "Ruwani Peris",     date: "Jul 28", priority: "Low"    },
 ];
 
 const DEALS = [
-  { id: 1, name: "Meridian ERP Rollout", stage: "Technical Review", value: "$124,000", client: "Meridian Holdings", priority: "High", due: "Sep 15" },
-  { id: 2, name: "CloudBridge Migration", stage: "Financial Review", value: "$330,000", client: "CloudBridge Inc.", priority: "High", due: "Sep 8" },
-  { id: 3, name: "NexGen CRM Setup", stage: "Negotiation", value: "$178,000", client: "NexGen Pharma", priority: "Medium", due: "Sep 22" },
-  { id: 4, name: "Orbit Analytics Suite", stage: "Proposal", value: "$210,000", client: "Orbit Retail Ltd", priority: "Medium", due: "Oct 1" },
-  { id: 5, name: "Apex DevOps Pipeline", stage: "Closed Won", value: "$45,000", client: "Apex Dynamics", priority: "Low", due: "Aug 20" },
-  { id: 6, name: "Vantage Security Audit", stage: "Closed Lost", value: "$87,500", client: "Vantage Systems", priority: "Low", due: "Aug 18" },
+  { id: 1, name: "Meridian ERP Rollout",    client: "Meridian Holdings", value: "$124,000", rep: "Ishara Fonseka",   date: "Aug 12" },
+  { id: 2, name: "CloudBridge Migration",   client: "CloudBridge Inc.", value: "$330,000", rep: "Nadeesha Perera",  date: "Aug 3"  },
+  { id: 3, name: "NexGen CRM Setup",        client: "NexGen Pharma",    value: "$178,000", rep: "Ishara Fonseka",   date: "Jul 30" },
+  { id: 4, name: "Orbit Analytics Suite",   client: "Orbit Retail Ltd", value: "$210,000", rep: "Ishara Fonseka",   date: "Aug 8"  },
+  { id: 5, name: "Apex DevOps Pipeline",    client: "Apex Dynamics",    value: "$45,000",  rep: "Ruwani Peris",     date: "Aug 5"  },
+  { id: 6, name: "Vantage Security Audit",  client: "Vantage Systems",  value: "$87,500",  rep: "Nadeesha Perera",  date: "Aug 10" },
 ];
 
 const PROJECTS = [
@@ -95,35 +95,39 @@ const TASKS = [
 ];
 
 const USERS = [
-  { id: 1,  name: "Yaqoob Sadikeen",    email: "yaqoob.s@altrium.io",    role: "Sales Manager",  status: "Active",   lastLogin: "Today" },
-  { id: 2,  name: "Ishara Fonseka",     email: "ishara.f@altrium.io",    role: "Sales Rep",      status: "Active",   lastLogin: "Today" },
-  { id: 3,  name: "Nadeesha Perera",    email: "nadeesha.p@altrium.io",  role: "Sales Rep",      status: "Active",   lastLogin: "Yesterday" },
-  { id: 4,  name: "Ruwani Peris",       email: "ruwani.p@altrium.io",    role: "Sales Rep",      status: "Active",   lastLogin: "Aug 18" },
-  { id: 5,  name: "Kamal Jayasuriya",   email: "kamal.j@altrium.io",     role: "Sales Rep",      status: "Active",   lastLogin: "Today" },
-  { id: 6,  name: "Sithara Mendis",     email: "sithara.m@altrium.io",   role: "Sales Rep",      status: "Active",   lastLogin: "Aug 17" },
-  { id: 7,  name: "Dinesh Weerasinghe", email: "dinesh.w@altrium.io",    role: "Sales Rep",      status: "Inactive", lastLogin: "Aug 12" },
-  { id: 8,  name: "Ravidu Pasan",       email: "ravidu.p@altrium.io",    role: "Tech Lead",      status: "Active",   lastLogin: "Today" },
-  { id: 9,  name: "Hashmath Fazli",     email: "hashmath.f@altrium.io",  role: "Finance Officer", status: "Active",  lastLogin: "Aug 17" },
-  { id: 10, name: "Natalia Dilshani",   email: "natalia.d@altrium.io",   role: "Admin",          status: "Active",   lastLogin: "Yesterday" },
+  { id: 1,  name: "Yaqoob Sadikeen",    email: "yaqoob.s@altrium.io",    role: "Sales Manager",   status: "Active",   lastLogin: "Today",     password: "Sales@123"   },
+  { id: 2,  name: "Ishara Fonseka",     email: "ishara.f@altrium.io",    role: "Sales Rep",       status: "Active",   lastLogin: "Today",     password: "Rep@123"     },
+  { id: 3,  name: "Nadeesha Perera",    email: "nadeesha.p@altrium.io",  role: "Sales Rep",       status: "Active",   lastLogin: "Yesterday", password: "Rep@456"     },
+  { id: 4,  name: "Ruwani Peris",       email: "ruwani.p@altrium.io",    role: "Sales Rep",       status: "Active",   lastLogin: "Aug 18",    password: "Rep@789"     },
+  { id: 5,  name: "Kamal Jayasuriya",   email: "kamal.j@altrium.io",     role: "Sales Rep",       status: "Active",   lastLogin: "Today",     password: "Rep@321"     },
+  { id: 6,  name: "Sithara Mendis",     email: "sithara.m@altrium.io",   role: "Sales Rep",       status: "Active",   lastLogin: "Aug 17",    password: "Rep@654"     },
+  { id: 7,  name: "Dinesh Weerasinghe", email: "dinesh.w@altrium.io",    role: "Sales Rep",       status: "Inactive", lastLogin: "Aug 12",    password: "Rep@000"     },
+  { id: 8,  name: "Ravidu Pasan",       email: "ravidu.p@altrium.io",    role: "Tech Lead",       status: "Active",   lastLogin: "Today",     password: "Tech@123"    },
+  { id: 9,  name: "Hashmath Fazli",     email: "hashmath.f@altrium.io",  role: "Finance Officer", status: "Active",   lastLogin: "Aug 17",    password: "Finance@123" },
+  { id: 10, name: "Natalia Dilshani",   email: "natalia.d@altrium.io",   role: "Admin",           status: "Active",   lastLogin: "Yesterday", password: "Admin@123"   },
 ];
 
 type AssessmentRecord = {
   id: number;
   leadName: string;
   type: "Technical" | "Financial";
-  status: "Pending" | "In Review" | "Submitted" | "Approved" | "Rejected";
+  status: "Pending" | "In Review" | "Submitted";
   risk: "Low" | "Medium" | "High";
   assessor: string;
   date: string;
   notes: string;
+  document?: string;
 };
 
 const ASSESSMENTS: AssessmentRecord[] = [
-  { id: 1, leadName: "Meridian Holdings",  type: "Technical",  status: "Submitted",  risk: "Medium", assessor: "Ravidu Pasan",    date: "Aug 14", notes: "Architecture is sound. Redis cache layer recommended. Medium complexity." },
-  { id: 2, leadName: "CloudBridge Inc.",   type: "Financial",  status: "Pending",    risk: "High",   assessor: "Hashmath Fazli",  date: "—",      notes: "" },
-  { id: 3, leadName: "NexGen Pharma",      type: "Technical",  status: "In Review",  risk: "Low",    assessor: "Ravidu Pasan",    date: "Aug 11", notes: "Reviewing integration requirements." },
-  { id: 4, leadName: "Orbit Retail Ltd",   type: "Financial",  status: "Submitted",  risk: "Low",    assessor: "Hashmath Fazli",  date: "Aug 8",  notes: "Margins acceptable. Recommend proceeding." },
-  { id: 5, leadName: "Apex Dynamics",      type: "Technical",  status: "Approved",   risk: "Low",    assessor: "Ravidu Pasan",    date: "Aug 6",  notes: "Clean requirements. Straightforward implementation." },
+  { id: 1,  leadName: "Apex Dynamics",    type: "Technical",  status: "Submitted",  risk: "Low",    assessor: "Ravidu Pasan",   date: "Aug 6",  notes: "Clean requirements. Straightforward implementation." },
+  { id: 2,  leadName: "Apex Dynamics",    type: "Financial",  status: "Pending",    risk: "Low",    assessor: "Hashmath Fazli", date: "—",      notes: "" },
+  { id: 3,  leadName: "CloudBridge Inc.", type: "Technical",  status: "In Review",  risk: "High",   assessor: "Ravidu Pasan",   date: "Aug 4",  notes: "Reviewing cloud migration complexity and infra dependencies." },
+  { id: 4,  leadName: "CloudBridge Inc.", type: "Financial",  status: "Submitted",  risk: "High",   assessor: "Hashmath Fazli", date: "Aug 5",  notes: "Revenue projections reviewed. High value, acceptable margins." },
+  { id: 5,  leadName: "NexGen Pharma",    type: "Technical",  status: "Submitted",  risk: "Low",    assessor: "Ravidu Pasan",   date: "Aug 27", notes: "Reviewing integration requirements." },
+  { id: 6,  leadName: "NexGen Pharma",    type: "Financial",  status: "Pending",    risk: "Low",    assessor: "Hashmath Fazli", date: "—",      notes: "" },
+  { id: 7,  leadName: "Orbit Retail Ltd", type: "Technical",  status: "Pending",    risk: "Low",    assessor: "Ravidu Pasan",   date: "—",      notes: "" },
+  { id: 8,  leadName: "Orbit Retail Ltd", type: "Financial",  status: "Submitted",  risk: "Low",    assessor: "Hashmath Fazli", date: "Aug 8",  notes: "Margins acceptable. Recommend proceeding." },
 ];
 
 const RESOURCES = [
@@ -144,6 +148,7 @@ function LeadStatusChip({ status }: { status: string }) {
   const map: Record<string, string> = {
     New:         "bg-[#1ed76020] text-[#1ed760] border-[#1ed76030]",
     Contacted:   "bg-[#1a6fe820] text-[#60a5fa] border-[#1a6fe830]",
+    Qualified:   "bg-[#a78bfa20] text-[#a78bfa] border-[#a78bfa30]",
     Assessment:  "bg-[#f59e0b20] text-[#f59e0b] border-[#f59e0b30]",
     Closed:      "bg-[#22222e] text-[#7a7a90] border-[#22222e]",
   };
@@ -176,7 +181,6 @@ function StatusDot({ status }: { status: string }) {
     Submitted: "#1a6fe8",
     Pending: "#f59e0b",
     "In Review": "#a78bfa",
-    Approved: "#1ed760",
   };
   return (
     <span className="flex items-center gap-1.5">
@@ -220,36 +224,60 @@ function ProgressBar({ value, color = "var(--primary)" }: { value: number; color
 
 // ─── Views ────────────────────────────────────────────────────────────────────
 
-function DashboardView({ role, activityLog, users }: { role: Role; activityLog: { time: string; event: string; type: string }[]; users?: typeof USERS }) {
+function DashboardView({ role, activityLog, users, leads, deals, assessments }: {
+  role: Role;
+  activityLog: { time: string; event: string; type: string }[];
+  users?: typeof USERS;
+  leads?: typeof LEADS;
+  deals?: typeof DEALS;
+  assessments?: AssessmentRecord[];
+}) {
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+
+  const allLeads = leads ?? LEADS;
+  const allDeals = deals ?? DEALS;
+  const allAssessments = assessments ?? [];
+
+  const activeLeads = allLeads.filter((l) => l.status !== "Closed").length;
+  const closedDeals = allDeals.length;
+  const qualifiedLeads = allLeads.filter((l) => l.status === "Qualified").length;
+  const inAssessment = allLeads.filter((l) => l.status === "Assessment").length;
+  const pendingAssess = allAssessments.filter((a) => a.status === "Pending" || a.status === "In Review").length;
+  const totalAssessValue = allAssessments
+    .map((a) => allLeads.find((l) => l.name === a.leadName))
+    .filter(Boolean)
+    .reduce((s, l) => s + parseInt((l!.value ?? "0").replace(/[^0-9]/g, "") || "0"), 0);
+
   const kpiSets: Record<Role, { label: string; value: string; sub: string; accent: string }[]> = {
     "Sales Manager": [
-      { label: "Active Leads", value: "47", sub: "+8 this week", accent: "#1ed760" },
-      { label: "Deals in Pipeline", value: "12", sub: "$1.07M total value", accent: "#1a6fe8" },
-      { label: "Win Rate", value: "38%", sub: "vs 31% last quarter", accent: "#fc4f37" },
-      { label: "Avg Deal Size", value: "$89K", sub: "↑ $12K from last month", accent: "#a78bfa" },
+      { label: "Active Leads",     value: String(activeLeads),    sub: `${qualifiedLeads} qualified`, accent: "#1ed760" },
+      { label: "In Assessment",    value: String(inAssessment),   sub: `${pendingAssess} pending review`, accent: "#f59e0b" },
+      { label: "Closed Deals",     value: String(closedDeals),    sub: "converted from leads",     accent: "#1a6fe8" },
+      { label: "Closed Leads",     value: String(allLeads.filter((l) => l.status === "Closed").length), sub: "not converted", accent: "#7a7a90" },
     ],
     "Tech Lead": [
-      { label: "Pending Assessments", value: "5", sub: "2 high priority", accent: "#1a6fe8" },
+      { label: "Pending Assessments", value: String(allAssessments.filter((a) => a.type === "Technical" && ["Pending","In Review"].includes(a.status)).length), sub: "technical reviews", accent: "#1a6fe8" },
       { label: "Active Projects", value: "3", sub: "1 at risk", accent: "#fc4f37" },
       { label: "Skills Gaps Flagged", value: "7", sub: "across 2 projects", accent: "#f59e0b" },
       { label: "Docs Uploaded", value: "23", sub: "this month", accent: "#1ed760" },
     ],
     "Finance Officer": [
-      { label: "Deals Under Review", value: "4", sub: "$690K total exposure", accent: "#a78bfa" },
-      { label: "Assessments Done", value: "11", sub: "this quarter", accent: "#1ed760" },
-      { label: "Pending Approvals", value: "2", sub: "avg 3.2 days to close", accent: "#f59e0b" },
-      { label: "Total Deal Value", value: "$1.07M", sub: "pipeline this quarter", accent: "#1a6fe8" },
+      { label: "Pending Reviews",  value: String(allAssessments.filter((a) => a.type === "Financial" && ["Pending","In Review"].includes(a.status)).length), sub: "financial assessments", accent: "#a78bfa" },
+      { label: "Assessments Done", value: String(allAssessments.filter((a) => a.type === "Financial" && a.status === "Submitted").length), sub: "submitted", accent: "#1ed760" },
+      { label: "Pending Approvals", value: String(allAssessments.filter((a) => a.type === "Financial" && a.status === "Submitted").length), sub: "awaiting SM approval", accent: "#f59e0b" },
+      { label: "Total Assessed",   value: "$" + Math.round(totalAssessValue / 1000) + "K", sub: "in reviewed leads", accent: "#1a6fe8" },
     ],
     "Admin": [
-      { label: "Total Users", value: "32", sub: "4 inactive", accent: "#fc4f37" },
-      { label: "New This Month", value: "5", sub: "3 pending activation", accent: "#1ed760" },
-      { label: "Roles Assigned", value: "100%", sub: "all users have a role", accent: "#1a6fe8" },
-      { label: "Password Resets", value: "3", sub: "last 30 days", accent: "#f59e0b" },
+      { label: "Total Users",      value: String((users ?? USERS).length), sub: `${(users ?? USERS).filter((u) => u.status === "Inactive").length} inactive`, accent: "#fc4f37" },
+      { label: "Active Users",     value: String((users ?? USERS).filter((u) => u.status === "Active").length), sub: "currently active", accent: "#1ed760" },
+      { label: "Roles Assigned",   value: "100%", sub: "all users have a role", accent: "#1a6fe8" },
+      { label: "Password Resets",  value: "3", sub: "last 30 days", accent: "#f59e0b" },
     ],
     "Sales Rep": [
-      { label: "My Open Leads", value: "3", sub: "2 need follow-up", accent: "#34d399" },
-      { label: "My Active Deals", value: "2", sub: "$178K in pipeline", accent: "#1a6fe8" },
-      { label: "Follow-ups Due", value: "4", sub: "1 overdue", accent: "#fc4f37" },
+      { label: "My Open Leads",    value: "3", sub: "2 need follow-up", accent: "#34d399" },
+      { label: "My Active Deals",  value: "2", sub: "$178K in pipeline", accent: "#1a6fe8" },
+      { label: "Follow-ups Due",   value: "4", sub: "1 overdue", accent: "#fc4f37" },
       { label: "Closed This Month", value: "1", sub: "Apex DevOps Pipeline", accent: "#f59e0b" },
     ],
   };
@@ -260,10 +288,16 @@ function DashboardView({ role, activityLog, users }: { role: Role; activityLog: 
     lead: "#1ed760", deal: "#1a6fe8", assess: "#a78bfa", user: "#f59e0b", project: "#fc4f37",
   };
 
+  const PIPELINE_STATUSES = ["New", "Contacted", "Qualified", "Assessment", "Closed"] as const;
+  const pipelineStatusColors: Record<string, string> = {
+    New: "#1ed760", Contacted: "#60a5fa", Qualified: "#a78bfa", Assessment: "#f59e0b", Closed: "#7a7a90",
+  };
+  const maxLeadCount = Math.max(1, ...PIPELINE_STATUSES.map((s) => allLeads.filter((l) => l.status === s).length));
+
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight mb-1">Good morning 👋</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-1">{greeting} 👋</h2>
         <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>
           Here's what's happening across your pipeline today.
         </p>
@@ -355,29 +389,27 @@ function DashboardView({ role, activityLog, users }: { role: Role; activityLog: 
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {/* Pipeline funnel */}
+          {/* Lead pipeline by status (live) */}
           <div className="lg:col-span-2 rounded-xl p-6" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
             <h3 className="text-sm font-semibold uppercase tracking-widest mb-5" style={{ color: "var(--muted-foreground)" }}>
-              Deal Stage Distribution
+              Lead Pipeline
             </h3>
-            {[
-              { stage: "Technical Review", count: 2, value: "$454K", pct: 85 },
-              { stage: "Financial Review", count: 1, value: "$330K", pct: 65 },
-              { stage: "Negotiation", count: 2, value: "$265K", pct: 50 },
-              { stage: "Proposal", count: 1, value: "$210K", pct: 38 },
-              { stage: "Closed Won", count: 1, value: "$45K", pct: 20 },
-            ].map((row) => (
-              <div key={row.stage} className="mb-4 last:mb-0">
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-sm font-medium">{row.stage}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs" style={{ color: "var(--muted-foreground)" }}>{row.count} deal{row.count !== 1 ? "s" : ""}</span>
-                    <span className="font-mono text-xs font-semibold" style={{ color: "var(--primary)" }}>{row.value}</span>
+            {PIPELINE_STATUSES.map((status) => {
+              const count = allLeads.filter((l) => l.status === status).length;
+              const pct = Math.round((count / maxLeadCount) * 100);
+              const color = pipelineStatusColors[status];
+              return (
+                <div key={status} className="mb-4 last:mb-0">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-sm font-medium">{status}</span>
+                    <span className="font-mono text-xs font-semibold" style={{ color }}>{count} lead{count !== 1 ? "s" : ""}</span>
+                  </div>
+                  <div className="h-2 rounded-full overflow-hidden" style={{ background: "var(--muted)" }}>
+                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: color }} />
                   </div>
                 </div>
-                <ProgressBar value={row.pct} />
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Activity feed */}
@@ -386,9 +418,11 @@ function DashboardView({ role, activityLog, users }: { role: Role; activityLog: 
               Recent Activity
             </h3>
             <div className="flex flex-col gap-4">
-              {activityLog.map((a, i) => (
+              {activityLog.length === 0 ? (
+                <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>No activity yet.</p>
+              ) : activityLog.slice(0, 9).map((a, i) => (
                 <div key={i} className="flex gap-3 items-start">
-                  <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ background: actColor[a.type] }} />
+                  <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ background: actColor[a.type] ?? "#7a7a90" }} />
                   <div>
                     <p className="text-sm leading-snug">{a.event}</p>
                     <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{a.time}</p>
@@ -414,13 +448,19 @@ const leadNotesMap: Record<number, LeadNote[]> = {};
 function LeadDetailPanel({
   lead,
   onClose,
-  canEdit,
+  isSalesRep,
+  isSalesManager,
+  onQualifyLead,
   onSubmitForAssessment,
+  onContactLead,
 }: {
   lead: typeof LEADS[number] | null;
   onClose: () => void;
-  canEdit?: boolean;
+  isSalesRep?: boolean;
+  isSalesManager?: boolean;
+  onQualifyLead?: (leadId: number) => void;
   onSubmitForAssessment?: (leadId: number) => void;
+  onContactLead?: (leadId: number) => void;
 }) {
   const [tab, setTab] = useState<"overview" | "activity" | "notes">("overview");
   const [comms, setComms] = useState<CommEntry[]>(() => leadCommsMap[lead?.id ?? 0] ?? []);
@@ -451,7 +491,7 @@ function LeadDetailPanel({
   if (!lead) return null;
 
   const statusColors: Record<string, string> = {
-    New: "#1ed760", Contacted: "#60a5fa", Assessment: "#f59e0b", Closed: "#7a7a90",
+    New: "#1ed760", Contacted: "#60a5fa", Qualified: "#a78bfa", Assessment: "#f59e0b", Closed: "#7a7a90",
   };
   const priorityColors: Record<string, string> = { High: "#fc4f37", Medium: "#f59e0b", Low: "#7a7a90" };
   const color = statusColors[lead.status] ?? "#7a7a90";
@@ -459,7 +499,8 @@ function LeadDetailPanel({
 
   const nowStr = () => new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 
-  const PIPELINE_STEPS = ["New", "Contacted", "Assessment", "Closed"];
+  const PIPELINE_STEPS = ["New", "Contacted", "Qualified", "Assessment", "Closed"];
+  const canEdit = !!isSalesRep;
   const currentStep = PIPELINE_STEPS.indexOf(lead.status);
 
   function addComm() {
@@ -470,6 +511,8 @@ function LeadDetailPanel({
     leadCommsMap[lead!.id] = updated;
     setNewCommText("");
     setAddingComm(false);
+    // Auto-advance New → Contacted on first logged interaction
+    if (lead!.status === "New" && onContactLead) onContactLead(lead!.id);
   }
 
   function addFollowUp() {
@@ -537,7 +580,18 @@ function LeadDetailPanel({
               </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              {canEdit && onSubmitForAssessment && lead.status === "Contacted" && (
+              {/* Sales Rep: qualify the lead */}
+              {isSalesRep && onQualifyLead && lead.status === "Contacted" && (
+                <button
+                  onClick={() => { onQualifyLead(lead.id); onClose(); }}
+                  className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-85"
+                  style={{ background: "#a78bfa", color: "#fff" }}
+                >
+                  Submit as Qualified
+                </button>
+              )}
+              {/* Sales Manager: send qualified lead to assessment */}
+              {isSalesManager && onSubmitForAssessment && lead.status === "Qualified" && (
                 <button
                   onClick={() => { onSubmitForAssessment(lead.id); onClose(); }}
                   className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-85"
@@ -831,22 +885,30 @@ function LeadsView({
   onAssignRep,
   onDeleteLead,
   onConvertLead,
+  onRejectLead,
   isSalesRep,
   isSalesManager,
   repName,
+  onQualifyLead,
   onSubmitForAssessment,
   onUpdateStatus,
+  onContactLead,
+  assessments,
 }: {
   leads: typeof LEADS;
   onNewLead: () => void;
   onAssignRep: (leadId: number, rep: string) => void;
   onDeleteLead?: (id: number) => void;
   onConvertLead?: (lead: typeof LEADS[number]) => void;
+  onRejectLead?: (leadId: number) => void;
   isSalesRep?: boolean;
   isSalesManager?: boolean;
   repName?: string;
+  onQualifyLead?: (leadId: number) => void;
   onSubmitForAssessment?: (leadId: number) => void;
   onUpdateStatus?: (leadId: number, status: string) => void;
+  onContactLead?: (leadId: number) => void;
+  assessments?: AssessmentRecord[];
 }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -855,7 +917,19 @@ function LeadsView({
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [detailLead, setDetailLead] = useState<typeof LEADS[number] | null>(null);
 
-  const statuses = ["All", "New", "Contacted", "Assessment", "Closed"];
+  const statuses = ["All", "New", "Contacted", "Qualified", "Assessment", "Closed"];
+
+  function bothAssessmentsDone(leadName: string) {
+    if (!assessments) return false;
+    const leadAssessments = assessments.filter((a) => a.leadName === leadName);
+    const tech = leadAssessments.find((a) => a.type === "Technical");
+    const fin = leadAssessments.find((a) => a.type === "Financial");
+    return (
+      tech && fin &&
+      tech.status === "Submitted" &&
+      fin.status === "Submitted"
+    );
+  }
 
   const visibleLeads = isSalesRep ? leads.filter((l) => l.rep === repName) : leads;
   const filtered = visibleLeads.filter((l) => {
@@ -867,7 +941,7 @@ function LeadsView({
 
   return (
     <>
-    <LeadDetailPanel lead={detailLead} onClose={() => setDetailLead(null)} canEdit={isSalesRep || isSalesManager} onSubmitForAssessment={onSubmitForAssessment} />
+    <LeadDetailPanel lead={detailLead} onClose={() => setDetailLead(null)} isSalesRep={isSalesRep} isSalesManager={isSalesManager} onQualifyLead={onQualifyLead} onSubmitForAssessment={onSubmitForAssessment} onContactLead={onContactLead} />
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
@@ -960,7 +1034,7 @@ function LeadsView({
                 <td className="px-5 py-4" style={{ color: "var(--muted-foreground)" }}>{l.contact}</td>
                 <td className="px-5 py-4 font-mono font-semibold" style={{ color: "var(--primary)" }}>{l.value}</td>
                 <td className="px-5 py-4">
-                  {isSalesRep && l.status !== "Assessment" && l.status !== "Closed" && onUpdateStatus ? (
+                  {isSalesRep && l.status === "New" && onUpdateStatus ? (
                     <select
                       value={l.status}
                       onChange={(e) => onUpdateStatus(l.id, e.target.value)}
@@ -1014,23 +1088,34 @@ function LeadsView({
                 {!isSalesRep && (
                   <td className="px-5 py-4" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center gap-2">
-                      {isSalesManager && l.status === "Contacted" && onSubmitForAssessment && (
-                        <button
-                          onClick={() => onSubmitForAssessment(l.id)}
-                          className="text-xs px-2.5 py-1 rounded-lg font-medium transition-all hover:opacity-80"
-                          style={{ background: "#a78bfa20", color: "#a78bfa", border: "1px solid #a78bfa30" }}
-                        >
-                          Submit
-                        </button>
+                      {/* Approve to Deal + Reject Lead: only when Assessment status AND both assessments done */}
+                      {isSalesManager && l.status === "Assessment" && bothAssessmentsDone(l.name) && (
+                        <>
+                          {onConvertLead && (
+                            <button
+                              onClick={() => onConvertLead(l)}
+                              className="text-xs px-2.5 py-1 rounded-lg font-medium transition-all hover:opacity-80"
+                              style={{ background: "#1ed76015", color: "#1ed760", border: "1px solid #1ed76030" }}
+                            >
+                              Approve to Deal
+                            </button>
+                          )}
+                          {onRejectLead && (
+                            <button
+                              onClick={() => onRejectLead(l.id)}
+                              className="text-xs px-2.5 py-1 rounded-lg font-medium transition-all hover:opacity-80"
+                              style={{ background: "#fc4f3715", color: "#fc4f37", border: "1px solid #fc4f3730" }}
+                            >
+                              Reject Lead
+                            </button>
+                          )}
+                        </>
                       )}
-                      {onConvertLead && (
-                        <button
-                          onClick={() => onConvertLead(l)}
-                          className="text-xs px-2.5 py-1 rounded-lg font-medium transition-all hover:opacity-80"
-                          style={{ background: "#1a6fe820", color: "#60a5fa", border: "1px solid #1a6fe830" }}
-                        >
-                          → Deal
-                        </button>
+                      {/* Waiting indicator when in Assessment but not both done yet */}
+                      {isSalesManager && l.status === "Assessment" && !bothAssessmentsDone(l.name) && (
+                        <span className="text-xs px-2.5 py-1 rounded-lg" style={{ color: "var(--muted-foreground)", border: "1px solid var(--border)" }}>
+                          Awaiting
+                        </span>
                       )}
                       {isSalesManager && onDeleteLead && (
                         confirmDeleteId === l.id ? (
@@ -1078,47 +1163,27 @@ function LeadsView({
 
 function DealsView({
   deals,
-  onConvertDeal,
   isSalesRep,
-  isSalesManager,
 }: {
   deals: typeof DEALS;
-  onConvertDeal?: (deal: typeof DEALS[number]) => void;
   isSalesRep?: boolean;
-  isSalesManager?: boolean;
 }) {
-  const stageColors: Record<string, string> = {
-    "Technical Review": "#1a6fe8",
-    "Financial Review": "#a78bfa",
-    "Negotiation": "#f59e0b",
-    "Proposal": "#38bdf8",
-    "Closed Won": "#1ed760",
-    "Closed Lost": "#7a7a90",
-  };
-
-  const totalValue = deals
-    .filter((d) => !["Closed Lost"].includes(d.stage))
-    .reduce((sum, d) => sum + parseInt(d.value.replace(/[$,]/g, "") || "0"), 0);
+  const totalValue = deals.reduce((sum, d) => sum + parseInt(d.value.replace(/[$,]/g, "") || "0"), 0);
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">{isSalesRep ? "My Deals" : "Deals"}</h2>
-          <p className="text-sm mt-0.5" style={{ color: "var(--muted-foreground)" }}>
-            {deals.length} {isSalesRep ? "deals assigned to you" : "active deals"} · ${(totalValue / 1000).toFixed(0)}K pipeline
-          </p>
-        </div>
+      <div>
+        <h2 className="text-2xl font-bold tracking-tight">{isSalesRep ? "My Deals" : "Deals"}</h2>
+        <p className="text-sm mt-0.5" style={{ color: "var(--muted-foreground)" }}>
+          {deals.length} {isSalesRep ? "deals assigned to you" : "closed deals"} · ${(totalValue / 1000).toFixed(0)}K total value
+        </p>
       </div>
 
       <div className="rounded-xl overflow-hidden" style={{ border: "1px solid var(--border)" }}>
         <table className="w-full text-sm">
           <thead>
             <tr style={{ background: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
-              {(isSalesManager && onConvertDeal
-                ? ["Deal", "Client", "Stage", "Value", "Priority", "Due", "Action"]
-                : ["Deal", "Client", "Stage", "Value", "Priority", "Due"]
-              ).map((h) => (
+              {["Deal Name", "Client", "Value", "Sales Rep", "Date Closed", "Certificate"].map((h) => (
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>
                   {h}
                 </th>
@@ -1126,46 +1191,37 @@ function DealsView({
             </tr>
           </thead>
           <tbody>
-            {deals.map((d, i) => (
+            {deals.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="px-5 py-12 text-center text-sm" style={{ color: "var(--muted-foreground)" }}>
+                  No deals yet. Convert a qualified lead to create one.
+                </td>
+              </tr>
+            ) : deals.map((d, i) => (
               <tr
                 key={d.id}
-                className="transition-colors hover:bg-[#1ed76008] cursor-pointer"
-                style={{
-                  background: i % 2 === 0 ? "var(--card)" : "var(--background)",
-                  borderBottom: "1px solid var(--border)",
-                }}
+                className="transition-colors hover:bg-[#1ed76008]"
+                style={{ background: i % 2 === 0 ? "var(--card)" : "var(--background)", borderBottom: "1px solid var(--border)" }}
               >
-                <td className="px-5 py-4 font-medium">{d.name}</td>
+                <td className="px-5 py-4 font-semibold">{d.name}</td>
                 <td className="px-5 py-4" style={{ color: "var(--muted-foreground)" }}>{d.client}</td>
+                <td className="px-5 py-4 font-mono font-bold" style={{ color: "var(--primary)" }}>{d.value}</td>
                 <td className="px-5 py-4">
-                  <span
-                    className="inline-block px-2.5 py-0.5 rounded-full text-xs font-medium"
-                    style={{
-                      background: stageColors[d.stage] + "20",
-                      color: stageColors[d.stage],
-                    }}
-                  >
-                    {d.stage}
+                  <span className="text-xs px-2.5 py-0.5 rounded-full font-medium" style={{ background: "#1ed76018", color: "#1ed760" }}>
+                    {(d as any).rep || "—"}
                   </span>
                 </td>
-                <td className="px-5 py-4 font-mono font-semibold" style={{ color: "var(--primary)" }}>{d.value}</td>
-                <td className="px-5 py-4"><PriorityChip priority={d.priority} /></td>
-                <td className="px-5 py-4 font-mono text-xs" style={{ color: "var(--muted-foreground)" }}>{d.due}</td>
-                {isSalesManager && onConvertDeal && (
-                  <td className="px-5 py-4">
-                    {d.stage === "Closed Won" ? (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); onConvertDeal(d); }}
-                        className="text-xs px-3 py-1.5 rounded-lg font-semibold transition-opacity hover:opacity-80"
-                        style={{ background: "#1a6fe820", color: "#1a6fe8", border: "1px solid #1a6fe840" }}
-                      >
-                        → Project
-                      </button>
-                    ) : (
-                      <span style={{ color: "var(--muted-foreground)" }}>—</span>
-                    )}
-                  </td>
-                )}
+                <td className="px-5 py-4 font-mono text-xs" style={{ color: "var(--muted-foreground)" }}>{(d as any).date || "—"}</td>
+                <td className="px-5 py-4">
+                  {(d as any).certificate ? (
+                    <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "#60a5fa" }}>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 1.5h5.5L10 4v6.5H2V1.5z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M7 1.5V4h2.5" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                      {(d as any).certificate}
+                    </span>
+                  ) : (
+                    <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>Not uploaded</span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -1345,6 +1401,9 @@ function UsersView({
 }) {
   const [search, setSearch] = useState("");
   const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserRecord | null>(null);
+  const [showCredPw, setShowCredPw] = useState(false);
+  const credOverlayRef = useRef<HTMLDivElement>(null);
 
   const filtered = users.filter(
     (u) =>
@@ -1389,8 +1448,9 @@ function UsersView({
         {filtered.map((u) => (
           <div
             key={u.id}
-            className="flex items-center gap-4 px-5 py-4 rounded-xl transition-colors"
+            className="flex items-center gap-4 px-5 py-4 rounded-xl transition-colors cursor-pointer hover:border-[#ffffff20]"
             style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+            onClick={() => { setSelectedUser(u); setShowCredPw(false); }}
           >
             <div
               className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
@@ -1422,7 +1482,7 @@ function UsersView({
               </div>
               {/* Remove / confirm */}
               {confirmId === u.id ? (
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleRemove(u.id)}
                     className="px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors"
@@ -1440,7 +1500,7 @@ function UsersView({
                 </div>
               ) : (
                 <button
-                  onClick={() => setConfirmId(u.id)}
+                  onClick={(e) => { e.stopPropagation(); setConfirmId(u.id); }}
                   className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[#fc4f3720] hover:text-[#fc4f37]"
                   style={{ color: "var(--muted-foreground)", border: "1px solid var(--border)" }}
                   title="Remove user"
@@ -1457,6 +1517,80 @@ function UsersView({
           <p className="text-sm py-8 text-center" style={{ color: "var(--muted-foreground)" }}>No users match your search.</p>
         )}
       </div>
+
+      {/* Credentials panel */}
+      {selectedUser && (() => {
+        const cred = DEMO_CREDENTIALS.find((c) => c.email.toLowerCase() === selectedUser.email.toLowerCase());
+        return (
+          <div
+            ref={credOverlayRef}
+            className="fixed inset-0 z-50 flex justify-end"
+            style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+            onClick={(e) => { if (e.target === credOverlayRef.current) setSelectedUser(null); }}
+          >
+            <div className="w-full max-w-md h-full flex flex-col shadow-2xl" style={{ background: "var(--card)", borderLeft: "1px solid var(--border)" }}>
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-5 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0"
+                    style={{ background: (ROLE_COLORS[selectedUser.role as Role] ?? "#7a7a90") + "25", color: ROLE_COLORS[selectedUser.role as Role] ?? "#7a7a90" }}>
+                    {selectedUser.name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                  </div>
+                  <div>
+                    <h2 className="text-base font-bold tracking-tight">{selectedUser.name}</h2>
+                    <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{selectedUser.role}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedUser(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ffffff10]" style={{ color: "var(--muted-foreground)" }}>✕</button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-5">
+                {/* Status */}
+                <div className="flex items-center justify-between px-4 py-3 rounded-xl" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                  <span className="text-sm font-medium">Account Status</span>
+                  <span className="text-sm font-semibold" style={{ color: selectedUser.status === "Active" ? "#1ed760" : "#7a7a90" }}>
+                    ● {selectedUser.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between px-4 py-3 rounded-xl" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                  <span className="text-sm font-medium">Last Login</span>
+                  <span className="text-sm font-mono" style={{ color: "var(--muted-foreground)" }}>{selectedUser.lastLogin}</span>
+                </div>
+
+                {/* Login credentials */}
+                <div className="p-4 rounded-xl flex flex-col gap-4" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--primary)" }}>Login Credentials</p>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest mb-1.5" style={{ color: "var(--muted-foreground)" }}>Email</p>
+                    <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-sm" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                      {selectedUser.email}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest mb-1.5" style={{ color: "var(--muted-foreground)" }}>Password</p>
+                    {cred ? (
+                      <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-mono text-sm" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                        <span className="flex-1">{showCredPw ? cred.password : "•".repeat(cred.password.length)}</span>
+                        <button
+                          onClick={() => setShowCredPw((p) => !p)}
+                          className="text-xs shrink-0 transition-opacity hover:opacity-80"
+                          style={{ color: "var(--muted-foreground)" }}
+                        >
+                          {showCredPw ? "Hide" : "Show"}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="text-sm px-3.5 py-2.5 rounded-xl" style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}>
+                        No credentials on record
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -1464,12 +1598,13 @@ function UsersView({
 // ─── New User Panel ───────────────────────────────────────────────────────────
 
 function NewUserPanel({ open, onClose, onSave }: { open: boolean; onClose: () => void; onSave: (u: Omit<UserRecord, "id" | "lastLogin">) => void }) {
-  const [form, setForm] = useState({ name: "", email: "", role: "Sales Rep" as Role, status: "Active" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", role: "Sales Rep" as Role, status: "Active" });
+  const [showPw, setShowPw] = useState(false);
   const [saved, setSaved] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!open) { setForm({ name: "", email: "", role: "Sales Rep", status: "Active" }); setSaved(false); }
+    if (!open) { setForm({ name: "", email: "", password: "", role: "Sales Rep", status: "Active" }); setSaved(false); setShowPw(false); }
   }, [open]);
 
   function set<K extends keyof typeof form>(k: K, v: typeof form[K]) {
@@ -1478,7 +1613,7 @@ function NewUserPanel({ open, onClose, onSave }: { open: boolean; onClose: () =>
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    onSave({ name: form.name, email: form.email, role: form.role, status: form.status });
+    onSave({ name: form.name, email: form.email, password: form.password, role: form.role, status: form.status });
     setSaved(true);
     setTimeout(onClose, 1100);
   }
@@ -1520,6 +1655,20 @@ function NewUserPanel({ open, onClose, onSave }: { open: boolean; onClose: () =>
                 placeholder="name@altrium.io" className={inputCls} style={inputStyle}
                 onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
                 onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")} />
+            </div>
+            <div>
+              <label className={labelCls} style={labelStyle}>Password *</label>
+              <div className="relative">
+                <input required type={showPw ? "text" : "password"} value={form.password} onChange={(e) => set("password", e.target.value)}
+                  placeholder="Min. 6 characters" className={inputCls} style={{ ...inputStyle, paddingRight: "2.5rem" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")} />
+                <button type="button" onClick={() => setShowPw((p) => !p)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs"
+                  style={{ color: "var(--muted-foreground)" }}>
+                  {showPw ? "Hide" : "Show"}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1585,7 +1734,7 @@ function NewUserPanel({ open, onClose, onSave }: { open: boolean; onClose: () =>
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#ffffff08]" style={{ color: "var(--muted-foreground)" }}>
             Cancel
           </button>
-          <button onClick={handleSave} disabled={saved || !form.name || !form.email}
+          <button onClick={handleSave} disabled={saved || !form.name || !form.email || form.password.length < 6}
             className="px-5 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
             style={{ background: saved ? "#1ed76030" : "var(--primary)", color: saved ? "var(--primary)" : "var(--primary-foreground)" }}>
             {saved ? "✓ User Added" : "Add User"}
@@ -1599,51 +1748,200 @@ function NewUserPanel({ open, onClose, onSave }: { open: boolean; onClose: () =>
 function AssessmentsView({
   assessments,
   role,
+  leads = [],
   onSubmitAssessment,
-  onApprove,
-  onReject,
 }: {
   assessments: AssessmentRecord[];
   role: Role;
-  onSubmitAssessment: (id: number, notes: string, risk: "Low" | "Medium" | "High") => void;
-  onApprove: (id: number) => void;
-  onReject: (id: number) => void;
+  leads?: typeof LEADS;
+  onSubmitAssessment: (id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string) => void;
 }) {
   const [submittingId, setSubmittingId] = useState<number | null>(null);
   const [notes, setNotes] = useState("");
   const [risk, setRisk] = useState<"Low" | "Medium" | "High">("Low");
+  const [docName, setDocName] = useState<string | undefined>(undefined);
+  const [search, setSearch] = useState("");
+  const [logLead, setLogLead] = useState<typeof LEADS[number] | null>(null);
+  const docInputRef = useRef<HTMLInputElement>(null);
+  const logOverlayRef = useRef<HTMLDivElement>(null);
 
   const isTechLead = role === "Tech Lead";
   const isFinance = role === "Finance Officer";
   const isManager = role === "Sales Manager";
 
-  const visible = assessments.filter((a) => {
-    if (isTechLead) return a.type === "Technical";
-    if (isFinance) return a.type === "Financial";
-    return true; // Sales Manager sees all
-  });
-
   const riskColor: Record<string, string> = { High: "#fc4f37", Medium: "#f59e0b", Low: "#1ed760" };
   const typeColor: Record<string, string> = { Technical: "#1a6fe8", Financial: "#a78bfa" };
   const statusColor: Record<string, string> = {
     Pending: "#f59e0b", "In Review": "#a78bfa", Submitted: "#1a6fe8",
-    Approved: "#1ed760", Rejected: "#fc4f37",
   };
+
+  const visible = assessments.filter((a) => {
+    if (isTechLead) return a.type === "Technical";
+    if (isFinance) return a.type === "Financial";
+    return true;
+  });
+
+  const filtered = search.trim()
+    ? visible.filter((a) => a.leadName.toLowerCase().includes(search.toLowerCase()) || a.assessor.toLowerCase().includes(search.toLowerCase()))
+    : visible;
 
   const title = isTechLead ? "Technical Assessments" : isFinance ? "Financial Assessments" : "All Assessments";
   const pendingCount = visible.filter((a) => a.status === "Pending" || a.status === "In Review").length;
 
+  const companiesWithAssessments: string[] = isManager
+    ? Array.from(new Set(filtered.map((a) => a.leadName)))
+    : [];
+
+  function cancelSubmit() {
+    setSubmittingId(null);
+    setNotes("");
+    setDocName(undefined);
+  }
+
+  function AssessmentRow({ a }: { a: AssessmentRecord }) {
+    return (
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: typeColor[a.type] + "20", color: typeColor[a.type] }}>
+              {a.type}
+            </span>
+            <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: statusColor[a.status] + "20", color: statusColor[a.status] }}>
+              {a.status}
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: riskColor[a.risk] }}>
+              {a.risk} risk
+            </span>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-xs font-medium">{a.assessor}</p>
+            {a.date !== "—" && <p className="text-xs font-mono" style={{ color: "var(--muted-foreground)" }}>{a.date}</p>}
+          </div>
+        </div>
+        {a.notes && (
+          <p className="text-sm px-3 py-2 rounded-lg" style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}>
+            {a.notes}
+          </p>
+        )}
+        {/* Document chip for Sales Manager */}
+        {isManager && a.document && (
+          <div className="flex items-center gap-2 mt-1">
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
+              <path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
+            </svg>
+            <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
-        <p className="text-sm mt-0.5" style={{ color: "var(--muted-foreground)" }}>
-          {pendingCount} pending · {visible.length} total
-        </p>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">{title}</h2>
+          <p className="text-sm mt-0.5" style={{ color: "var(--muted-foreground)" }}>
+            {pendingCount} pending · {visible.length} total
+          </p>
+        </div>
+        {/* Search */}
+        <div className="relative">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="5" stroke="#7a7a90" strokeWidth="1.5"/>
+            <path d="M11 11l3 3" stroke="#7a7a90" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          <input
+            type="text"
+            placeholder="Search by company or assessor…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9 pr-4 py-2 rounded-lg text-sm outline-none w-64"
+            style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)" }}
+            onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
+            onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs"
+              style={{ color: "var(--muted-foreground)" }}
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-col gap-4">
-        {visible.map((a) => (
+        {/* Sales Manager: merged view per company */}
+        {isManager && companiesWithAssessments.map((company) => {
+          const companyAssessments = filtered.filter((a) => a.leadName === company);
+          const tech = companyAssessments.find((a) => a.type === "Technical");
+          const fin = companyAssessments.find((a) => a.type === "Financial");
+          const techDone = tech?.status === "Submitted";
+          const finDone = fin?.status === "Submitted";
+          const bothDone = techDone && finDone;
+          const anySubmitted = companyAssessments.some((a) => a.status === "Submitted");
+
+          // Pending labels
+          const pendingLabels: string[] = [];
+          if (!techDone) pendingLabels.push("Technical assessment pending");
+          if (!finDone) pendingLabels.push("Financial assessment pending");
+
+          return (
+            <div
+              key={company}
+              className="rounded-xl p-5"
+              style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+            >
+              <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
+                <div>
+                  <h3 className="font-semibold text-base">{company}</h3>
+                  {pendingLabels.length > 0 && !bothDone && (
+                    <div className="flex flex-wrap gap-1.5 mt-1.5">
+                      {pendingLabels.map((lbl) => (
+                        <span key={lbl} className="text-xs px-2 py-0.5 rounded-full" style={{ background: "#f59e0b15", color: "#f59e0b", border: "1px solid #f59e0b30" }}>
+                          {lbl}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  {bothDone && (
+                    <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: "#1ed76015", color: "#1ed760", border: "1px solid #1ed76030" }}>
+                      Both Complete
+                    </span>
+                  )}
+                  {anySubmitted && (
+                    <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ background: "#1a6fe815", color: "#60a5fa", border: "1px solid #1a6fe830" }}>
+                      Review Needed
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-4">
+                {tech && (
+                  <div className="rounded-lg p-4" style={{ background: "#1a6fe808", border: "1px solid #1a6fe820" }}>
+                    <AssessmentRow a={tech} />
+                  </div>
+                )}
+                {fin && (
+                  <div className="rounded-lg p-4" style={{ background: "#a78bfa08", border: "1px solid #a78bfa20" }}>
+                    <AssessmentRow a={fin} />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Tech Lead / Finance Officer: individual cards with doc upload */}
+        {!isManager && filtered.map((a) => {
+          const cardLead = leads?.find((l) => l.name === a.leadName) ?? null;
+          return (
           <div
             key={a.id}
             className="rounded-xl p-5"
@@ -1651,7 +1949,12 @@ function AssessmentsView({
           >
             <div className="flex items-start justify-between gap-4 mb-3">
               <div>
-                <h3 className="font-semibold text-base">{a.leadName}</h3>
+                <button
+                  onClick={() => cardLead && setLogLead(cardLead)}
+                  className="font-semibold text-base text-left hover:underline underline-offset-2 transition-all"
+                  style={{ color: "var(--foreground)" }}
+                  title="View interaction log"
+                >{a.leadName}</button>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-xs px-2.5 py-0.5 rounded-full font-medium" style={{ background: typeColor[a.type] + "20", color: typeColor[a.type] }}>
                     {a.type}
@@ -1676,8 +1979,16 @@ function AssessmentsView({
                 {a.notes}
               </p>
             )}
+            {a.document && (
+              <div className="flex items-center gap-2 mb-3 px-1">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
+                  <path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
+                </svg>
+                <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+              </div>
+            )}
 
-            {/* Tech Lead / Finance Officer: submit assessment */}
             {(isTechLead || isFinance) && (a.status === "Pending" || a.status === "In Review") && (
               submittingId === a.id ? (
                 <div className="flex flex-col gap-3 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
@@ -1691,6 +2002,32 @@ function AssessmentsView({
                     onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
                   />
+                  {/* Document upload */}
+                  <input
+                    ref={docInputRef}
+                    type="file"
+                    accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
+                    className="hidden"
+                    onChange={(e) => setDocName(e.target.files?.[0]?.name)}
+                  />
+                  <button
+                    onClick={() => docInputRef.current?.click()}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm w-fit transition-opacity hover:opacity-80"
+                    style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--muted-foreground)" }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path d="M4 1h5.5L13 4.5V15H4V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                      <path d="M9 1v4h4" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                      <path d="M8 7v4M6 9l2-2 2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    {docName ? docName : "Attach document (optional)"}
+                    {docName && (
+                      <span
+                        onClick={(e) => { e.stopPropagation(); setDocName(undefined); }}
+                        className="ml-1 opacity-60 hover:opacity-100"
+                      >✕</span>
+                    )}
+                  </button>
                   <div className="flex items-center gap-3">
                     <select
                       value={risk}
@@ -1703,11 +2040,11 @@ function AssessmentsView({
                       <option value="High">High Risk</option>
                     </select>
                     <div className="flex gap-2 ml-auto">
-                      <button onClick={() => setSubmittingId(null)} className="px-4 py-2 rounded-lg text-sm" style={{ color: "var(--muted-foreground)" }}>
+                      <button onClick={cancelSubmit} className="px-4 py-2 rounded-lg text-sm" style={{ color: "var(--muted-foreground)" }}>
                         Cancel
                       </button>
                       <button
-                        onClick={() => { onSubmitAssessment(a.id, notes, risk); setSubmittingId(null); setNotes(""); }}
+                        onClick={() => { onSubmitAssessment(a.id, notes, risk, docName); cancelSubmit(); }}
                         disabled={!notes.trim()}
                         className="px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50"
                         style={{ background: "var(--secondary)", color: "#fff" }}
@@ -1719,7 +2056,7 @@ function AssessmentsView({
                 </div>
               ) : (
                 <button
-                  onClick={() => { setSubmittingId(a.id); setNotes(a.notes); setRisk(a.risk); }}
+                  onClick={() => { setSubmittingId(a.id); setNotes(a.notes); setRisk(a.risk); setDocName(undefined); }}
                   className="mt-2 px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
                   style={{ background: "#1a6fe815", color: "#60a5fa", border: "1px solid #1a6fe830" }}
                 >
@@ -1727,39 +2064,103 @@ function AssessmentsView({
                 </button>
               )
             )}
-
-            {/* Sales Manager: approve / reject submitted assessments */}
-            {isManager && a.status === "Submitted" && (
-              <div className="flex items-center gap-3 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
-                <span className="text-xs flex-1" style={{ color: "var(--muted-foreground)" }}>
-                  Assessment ready for review
-                </span>
-                <button
-                  onClick={() => onReject(a.id)}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
-                  style={{ background: "#fc4f3715", color: "#fc4f37", border: "1px solid #fc4f3730" }}
-                >
-                  Reject
-                </button>
-                <button
-                  onClick={() => onApprove(a.id)}
-                  className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
-                  style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
-                >
-                  Approve
-                </button>
-              </div>
-            )}
           </div>
-        ))}
+          );
+        })}
 
-        {visible.length === 0 && (
+        {filtered.length === 0 && (
           <div className="py-16 text-center" style={{ color: "var(--muted-foreground)" }}>
-            <p className="text-lg mb-1">No assessments</p>
-            <p className="text-sm">Assessments will appear here when leads are submitted.</p>
+            {search ? (
+              <>
+                <p className="text-lg mb-1">No results for "{search}"</p>
+                <p className="text-sm">Try a different company or assessor name.</p>
+              </>
+            ) : (
+              <>
+                <p className="text-lg mb-1">No assessments</p>
+                <p className="text-sm">Assessments will appear here when leads are submitted.</p>
+              </>
+            )}
           </div>
         )}
       </div>
+
+      {/* Interaction Log Panel */}
+      {logLead && (
+        <div
+          ref={logOverlayRef}
+          className="fixed inset-0 z-50 flex justify-end"
+          style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(4px)" }}
+          onClick={(e) => { if (e.target === logOverlayRef.current) setLogLead(null); }}
+        >
+          <div className="w-full max-w-md h-full flex flex-col shadow-2xl" style={{ background: "var(--card)", borderLeft: "1px solid var(--border)" }}>
+            {/* Header */}
+            <div className="flex items-start justify-between px-6 py-5 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
+              <div>
+                <h2 className="text-lg font-bold tracking-tight">{logLead.name}</h2>
+                <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>
+                  {logLead.industry} · {logLead.source}
+                </p>
+              </div>
+              <button onClick={() => setLogLead(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ffffff10]" style={{ color: "var(--muted-foreground)" }}>✕</button>
+            </div>
+
+            {/* Lead value — shown for Finance Officer */}
+            {isFinance && (
+              <div className="mx-6 mt-5 px-4 py-3 rounded-xl flex items-center justify-between" style={{ background: "#a78bfa12", border: "1px solid #a78bfa30" }}>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: "#a78bfa" }}>Lead Value</p>
+                  <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>Original negotiated value</p>
+                </div>
+                <span className="text-xl font-bold font-mono" style={{ color: "var(--foreground)" }}>{logLead.value}</span>
+              </div>
+            )}
+
+            {/* Contact quick-ref */}
+            <div className="mx-6 mt-4 px-4 py-3 rounded-xl" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+              <p className="text-xs font-semibold mb-1" style={{ color: "var(--muted-foreground)" }}>Contact</p>
+              <p className="text-sm font-medium">{logLead.contact}</p>
+              <p className="text-xs mt-0.5 font-mono" style={{ color: "var(--muted-foreground)" }}>{logLead.email} · {logLead.phone}</p>
+            </div>
+
+            {/* Interaction log */}
+            <div className="flex-1 overflow-y-auto px-6 py-5">
+              <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "var(--muted-foreground)" }}>Interaction Log</p>
+              {(() => {
+                const comms = leadCommsMap[logLead.id] ?? [];
+                const typeIcon: Record<string, string> = { Call: "📞", Meeting: "🤝", Email: "✉️" };
+                const typeColor: Record<string, string> = { Call: "#1ed760", Meeting: "#1a6fe8", Email: "#a78bfa" };
+                if (comms.length === 0) {
+                  return (
+                    <div className="py-10 text-center" style={{ color: "var(--muted-foreground)" }}>
+                      <p className="text-sm">No interactions logged yet.</p>
+                      <p className="text-xs mt-1">The Sales Rep will log calls, meetings and emails here.</p>
+                    </div>
+                  );
+                }
+                return (
+                  <div className="flex flex-col gap-3">
+                    {comms.map((c) => (
+                      <div key={c.id} className="flex gap-3 items-start p-3 rounded-xl" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                        <span className="w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0" style={{ background: typeColor[c.type] + "20" }}>
+                          {typeIcon[c.type]}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <span className="text-xs font-semibold" style={{ color: typeColor[c.type] }}>{c.type}</span>
+                            <span className="text-xs font-mono" style={{ color: "var(--muted-foreground)" }}>{c.time}</span>
+                          </div>
+                          <p className="text-sm leading-snug">{c.summary}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1842,7 +2243,7 @@ function ResourcesView({ resources }: { resources: ResourceRecord[] }) {
 
 // ─── Login Page ──────────────────────────────────────────────────────────────
 
-const DEMO_CREDENTIALS: { email: string; password: string; role: Role; name: string }[] = [
+let DEMO_CREDENTIALS: { email: string; password: string; role: Role; name: string }[] = [
   { email: "yaqoob.s@altrium.io",   password: "Sales@123",   role: "Sales Manager",  name: "Yaqoob Sadikeen" },
   { email: "ishara.f@altrium.io",   password: "Rep@123",     role: "Sales Rep",      name: "Ishara Fonseka" },
   { email: "ravidu.p@altrium.io",   password: "Tech@123",    role: "Tech Lead",      name: "Ravidu Pasan" },
@@ -1991,7 +2392,6 @@ function LoginPage({ onLogin }: { onLogin: (role: Role, name: string) => void })
           {[
             { icon: "◎", label: "Lead & Deal Pipeline", desc: "From first contact to signed deal" },
             { icon: "◉", label: "Technical & Financial Assessments", desc: "Structured review workflows" },
-            { icon: "◫", label: "Project Delivery", desc: "Resources, tasks, milestones" },
           ].map((f) => (
             <div key={f.label} className="flex items-start gap-3">
               <span className="text-base mt-0.5" style={{ color: "var(--primary)" }}>{f.icon}</span>
@@ -2449,7 +2849,7 @@ function NewLeadPanel({
                       className={inputCls}
                       style={{ ...inputStyle, appearance: "none" }}
                     >
-                      {["USD", "EUR", "GBP", "AED", "INR", "SGD"].map((c) => (
+                      {["USD", "LKR", "EUR", "GBP", "AED", "INR", "SGD"].map((c) => (
                         <option key={c} value={c}>{c}</option>
                       ))}
                     </select>
@@ -2639,43 +3039,52 @@ function ConvertLeadPanel({
   onConfirm: (deal: typeof DEALS[number]) => void;
 }) {
   const [dealName, setDealName] = useState("");
-  const [stage, setStage] = useState("Proposal");
-  const [priority, setPriority] = useState("Medium");
-  const [due, setDue] = useState("");
+  const [certName, setCertName] = useState("");
   const [saved, setSaved] = useState(false);
+  const [dealCurrency, setDealCurrency] = useState("USD");
+  const [dealAmount, setDealAmount] = useState("");
   const overlayRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (lead) {
       setDealName(`${lead.name} — Deal`);
-      setStage("Proposal");
-      setPriority("Medium");
-      setDue("");
+      setCertName("");
       setSaved(false);
+      // Parse existing value e.g. "$124,000" or "LKR 500,000"
+      const raw = lead.value ?? "";
+      const currencySymbols: Record<string, string> = { "$": "USD", "€": "EUR", "£": "GBP" };
+      const symMatch = raw.match(/^([$€£])/);
+      if (symMatch) {
+        setDealCurrency(currencySymbols[symMatch[1]] ?? "USD");
+        setDealAmount(raw.replace(/[$€£,]/g, "").trim());
+      } else {
+        const codeMatch = raw.match(/^([A-Z]{2,3})\s*/);
+        setDealCurrency(codeMatch ? codeMatch[1] : "USD");
+        setDealAmount(raw.replace(/^[A-Z]{2,3}\s*/, "").replace(/,/g, "").trim());
+      }
     }
   }, [lead]);
 
   if (!lead) return null;
 
-  const stageColors: Record<string, string> = {
-    "Proposal": "#38bdf8", "Technical Review": "#1a6fe8",
-    "Financial Review": "#a78bfa", "Negotiation": "#f59e0b",
-  };
-
   function handleConfirm(e: React.FormEvent) {
     e.preventDefault();
     if (!lead) return;
+    const today = new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" });
+    const symMap: Record<string, string> = { USD: "$", EUR: "€", GBP: "£" };
+    const prefix = symMap[dealCurrency] ?? dealCurrency + " ";
+    const formattedValue = (symMap[dealCurrency] ? prefix : prefix) +
+      (parseFloat(dealAmount.replace(/,/g, "")) || 0).toLocaleString();
     onConfirm({
       id: Date.now(),
       name: dealName,
-      stage,
-      value: lead.value,
       client: lead.name,
-      priority,
-      due: due
-        ? new Date(due).toLocaleDateString("en-US", { month: "short", day: "numeric" })
-        : "TBD",
-    });
+      value: formattedValue,
+      rep: lead.rep || "—",
+      date: today,
+      ...(certName ? { certificate: certName } : {}),
+    } as any);
     setSaved(true);
     setTimeout(onClose, 1100);
   }
@@ -2690,17 +3099,19 @@ function ConvertLeadPanel({
       <div className="w-full max-w-md h-full flex flex-col shadow-2xl"
         style={{ background: "var(--card)", borderLeft: "1px solid var(--border)" }}>
 
+        {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
           <div>
             <h2 className="text-lg font-bold tracking-tight">Convert to Deal</h2>
             <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>
-              This will create a new deal from <strong>{lead.name}</strong>
+              Creates a deal record from <strong>{lead.name}</strong>
             </p>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ffffff10]" style={{ color: "var(--muted-foreground)" }}>✕</button>
         </div>
 
         <form onSubmit={handleConfirm} className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-5">
+
           {/* Lead summary */}
           <div className="p-4 rounded-xl" style={{ background: "#1a6fe812", border: "1px solid #1a6fe830" }}>
             <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#60a5fa" }}>From Lead</p>
@@ -2724,46 +3135,83 @@ function ConvertLeadPanel({
                 onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")} />
             </div>
             <div>
-              <label className="text-xs font-semibold uppercase tracking-widest block mb-1.5" style={{ color: "var(--muted-foreground)" }}>Initial Stage</label>
-              <div className="flex flex-wrap gap-2">
-                {["Proposal", "Technical Review", "Financial Review", "Negotiation"].map((s) => (
-                  <button key={s} type="button" onClick={() => setStage(s)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
-                    style={{
-                      background: stage === s ? (stageColors[s] + "25") : "var(--muted)",
-                      color: stage === s ? stageColors[s] : "var(--muted-foreground)",
-                      border: `1px solid ${stage === s ? stageColors[s] + "50" : "transparent"}`,
-                    }}>
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-widest block mb-1.5" style={{ color: "var(--muted-foreground)" }}>Priority</label>
+              <label className="text-xs font-semibold uppercase tracking-widest block mb-1.5" style={{ color: "var(--muted-foreground)" }}>
+                Confirmed Value *
+                <span className="ml-2 normal-case font-normal tracking-normal" style={{ color: "var(--muted-foreground)" }}>
+                  — pre-filled from lead, adjust if negotiated
+                </span>
+              </label>
               <div className="flex gap-2">
-                {["Low", "Medium", "High"].map((p) => {
-                  const c: Record<string, string> = { Low: "#7a7a90", Medium: "#f59e0b", High: "#fc4f37" };
-                  return (
-                    <button key={p} type="button" onClick={() => setPriority(p)}
-                      className="flex-1 py-2 rounded-lg text-xs font-semibold transition-all"
-                      style={{
-                        background: priority === p ? c[p] + "25" : "var(--muted)",
-                        color: priority === p ? c[p] : "var(--muted-foreground)",
-                        border: `1px solid ${priority === p ? c[p] + "50" : "transparent"}`,
-                      }}>
-                      {p}
-                    </button>
-                  );
-                })}
+                <select
+                  value={dealCurrency}
+                  onChange={(e) => setDealCurrency(e.target.value)}
+                  className="px-3 py-2.5 rounded-xl text-sm outline-none shrink-0"
+                  style={{ ...inputStyle, width: "96px" }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+                >
+                  {["USD", "LKR", "EUR", "GBP", "AED", "INR", "SGD"].map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <input
+                  required
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="0"
+                  value={dealAmount}
+                  onChange={(e) => setDealAmount(e.target.value.replace(/[^0-9.]/g, ""))}
+                  className={`${inputCls} flex-1`}
+                  style={inputStyle}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+                />
               </div>
+              {lead.value && dealAmount && dealAmount !== lead.value.replace(/[$€£,A-Z\s]/g, "") && (
+                <p className="text-xs mt-1.5" style={{ color: "#f59e0b" }}>
+                  Changed from original lead value: {lead.value}
+                </p>
+              )}
             </div>
-            <div>
-              <label className="text-xs font-semibold uppercase tracking-widest block mb-1.5" style={{ color: "var(--muted-foreground)" }}>Target Close Date</label>
-              <input type="date" value={due} onChange={(e) => setDue(e.target.value)} className={inputCls} style={inputStyle}
-                onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")}
-                onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")} />
+          </div>
+
+          {/* Certificate upload (optional) */}
+          <div className="p-4 rounded-xl flex flex-col gap-3" style={{ background: "var(--background)", border: "1px solid var(--border)" }}>
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Deal Certificate</p>
+              <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: "var(--muted)", color: "var(--muted-foreground)" }}>Optional</span>
             </div>
+            <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>
+              Upload a signed deal certificate or agreement document.
+            </p>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".pdf,.doc,.docx,.png,.jpg"
+              className="hidden"
+              onChange={(e) => { const f = e.target.files?.[0]; if (f) setCertName(f.name); }}
+            />
+            {certName ? (
+              <div className="flex items-center justify-between px-3 py-2.5 rounded-lg" style={{ background: "var(--muted)", border: "1px solid #1a6fe840" }}>
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ color: "#60a5fa", flexShrink: 0 }}>
+                    <path d="M2 1.5h6.5L12 5v7.5H2V1.5z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
+                    <path d="M8 1.5V5h4" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="text-xs truncate font-medium" style={{ color: "#60a5fa" }}>{certName}</span>
+                </div>
+                <button type="button" onClick={() => { setCertName(""); if (fileRef.current) fileRef.current.value = ""; }}
+                  className="text-xs shrink-0 ml-2" style={{ color: "var(--muted-foreground)" }}>✕</button>
+              </div>
+            ) : (
+              <button type="button" onClick={() => fileRef.current?.click()}
+                className="flex items-center justify-center gap-2 py-6 rounded-xl border-2 border-dashed transition-colors hover:border-[#1a6fe860]"
+                style={{ borderColor: "var(--border)", color: "var(--muted-foreground)" }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12V4M4 8l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><path d="M2 13h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                <span className="text-sm font-medium">Click to upload</span>
+                <span className="text-xs">PDF, DOC, PNG, JPG</span>
+              </button>
+            )}
           </div>
         </form>
 
@@ -2771,159 +3219,10 @@ function ConvertLeadPanel({
           <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#ffffff08]" style={{ color: "var(--muted-foreground)" }}>
             Cancel
           </button>
-          <button onClick={handleConfirm} disabled={saved || !dealName}
+          <button onClick={handleConfirm} disabled={saved || !dealName || !dealAmount}
             className="px-5 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
             style={{ background: saved ? "#1ed76030" : "var(--primary)", color: saved ? "var(--primary)" : "var(--primary-foreground)" }}>
             {saved ? "✓ Deal Created" : "Convert to Deal →"}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Convert Deal → Project Panel ────────────────────────────────────────────
-
-function ConvertDealPanel({
-  deal,
-  onClose,
-  onConfirm,
-}: {
-  deal: typeof DEALS[number] | null;
-  onClose: () => void;
-  onConfirm: (project: typeof PROJECTS[number]) => void;
-}) {
-  const [projectName, setProjectName] = useState("");
-  const [lead, setLead] = useState("Ravidu Pasan");
-  const [deadline, setDeadline] = useState("");
-  const [teamSize, setTeamSize] = useState("3");
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    if (deal) {
-      setProjectName(deal.name);
-      setSaved(false);
-    }
-  }, [deal]);
-
-  if (!deal) return null;
-
-  function handleConfirm(e: React.FormEvent) {
-    e.preventDefault();
-    if (!deal) return;
-    onConfirm({
-      id: Date.now(),
-      name: projectName || deal.name,
-      status: "Planning",
-      progress: 0,
-      lead,
-      deadline: deadline
-        ? new Date(deadline).toLocaleDateString("en-US", { month: "short", day: "numeric" })
-        : "TBD",
-      team: parseInt(teamSize) || 3,
-    });
-    setSaved(true);
-    setTimeout(onClose, 1100);
-  }
-
-  const techLeads = ["Ravidu Pasan", "Inshiraff Thaseem", "Chamil Wijeratne"];
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex"
-      style={{ background: "rgba(0,0,0,0.6)" }}
-      onClick={onClose}
-    >
-      <div
-        className="ml-auto h-full w-full max-w-md flex flex-col overflow-y-auto"
-        style={{ background: "var(--card)", borderLeft: "1px solid var(--border)" }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between px-6 py-5 shrink-0" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div>
-            <h2 className="text-lg font-bold tracking-tight">Convert Deal to Project</h2>
-            <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>{deal.client} · {deal.value}</p>
-          </div>
-          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ffffff10] transition-colors" style={{ color: "var(--muted-foreground)" }}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-          </button>
-        </div>
-
-        <form onSubmit={handleConfirm} className="flex flex-col gap-5 px-6 py-6 flex-1">
-          <div
-            className="rounded-xl p-4 flex items-center gap-3"
-            style={{ background: "#1a6fe810", border: "1px solid #1a6fe830" }}
-          >
-            <span style={{ color: "#1a6fe8", fontSize: 20 }}>📦</span>
-            <div>
-              <p className="text-sm font-semibold" style={{ color: "#60a5fa" }}>Closed Won → Project</p>
-              <p className="text-xs mt-0.5" style={{ color: "var(--muted-foreground)" }}>A new project will be created in Planning status.</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Project Name</label>
-            <input
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              required
-              className="w-full px-4 py-2.5 rounded-lg text-sm outline-none"
-              style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--foreground)" }}
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Project Lead</label>
-            <select
-              value={lead}
-              onChange={(e) => setLead(e.target.value)}
-              className="w-full px-4 py-2.5 rounded-lg text-sm outline-none"
-              style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--foreground)" }}
-            >
-              {techLeads.map((n) => <option key={n} value={n}>{n}</option>)}
-            </select>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Target Deadline</label>
-              <input
-                type="date"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg text-sm outline-none"
-                style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--foreground)", colorScheme: "dark" }}
-              />
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Team Size</label>
-              <input
-                type="number"
-                min={1}
-                max={20}
-                value={teamSize}
-                onChange={(e) => setTeamSize(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-lg text-sm outline-none"
-                style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--foreground)" }}
-              />
-            </div>
-          </div>
-        </form>
-
-        <div className="flex items-center justify-between px-6 py-4 shrink-0" style={{ borderTop: "1px solid var(--border)" }}>
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-[#ffffff08]" style={{ color: "var(--muted-foreground)" }}>
-            Cancel
-          </button>
-          <button
-            onClick={(e) => handleConfirm(e as unknown as React.FormEvent)}
-            disabled={saved || !projectName}
-            className="px-5 py-2 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-60"
-            style={{
-              background: saved ? "#1a6fe830" : "#1a6fe8",
-              color: "#ffffff",
-            }}
-          >
-            {saved ? "✓ Project Created" : "Create Project →"}
           </button>
         </div>
       </div>
@@ -3124,7 +3423,6 @@ export default function App() {
   const [newLeadOpen, setNewLeadOpen] = useState(false);
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [convertingLead, setConvertingLead] = useState<typeof LEADS[number] | null>(null);
-  const [convertingDeal, setConvertingDeal] = useState<typeof DEALS[number] | null>(null);
   const [allocatingProject, setAllocatingProject] = useState<typeof PROJECTS[number] | null>(null);
   const [leads, setLeads] = useState(LEADS);
   const [deals, setDeals] = useState(DEALS);
@@ -3192,7 +3490,8 @@ export default function App() {
   }
 
   function handleAddUser(u: Omit<typeof USERS[number], "id" | "lastLogin">) {
-    setUsers((prev) => [...prev, { ...u, id: prev.length + 1, lastLogin: "Just now" }]);
+    setUsers((prev) => [...prev, { ...u, id: Date.now(), lastLogin: "Just now" }]);
+    DEMO_CREDENTIALS = [...DEMO_CREDENTIALS, { email: u.email, password: u.password, role: u.role as Role, name: u.name }];
     logActivity(`New user added — ${u.name} (${u.role})`, "user");
   }
 
@@ -3204,16 +3503,6 @@ export default function App() {
     });
   }
 
-  function handleConvertDeal(deal: typeof DEALS[number]) {
-    setConvertingDeal(deal);
-  }
-
-  function handleDealToProject(project: typeof PROJECTS[number]) {
-    setProjects((prev) => [project, ...prev]);
-    setDeals((prev) => prev.map((d) => d.id === convertingDeal?.id ? { ...d, stage: "Closed Won" } : d));
-    setConvertingDeal(null);
-    logActivity(`Deal converted to project — ${project.name}`, "project");
-  }
 
   function handleAllocateResources(projectId: number, allocated: string[]) {
     const projectName = projects.find((p) => p.id === projectId)?.name ?? "";
@@ -3227,9 +3516,20 @@ export default function App() {
     setAllocatingProject(null);
   }
 
-  function handleSubmitForAssessment(leadId: number) {
+  function handleContactLead(leadId: number) {
+    setLeads((prev) => prev.map((l) => l.id === leadId && l.status === "New" ? { ...l, status: "Contacted" } : l));
+  }
+
+  function handleQualifyLead(leadId: number) {
     const lead = leads.find((l) => l.id === leadId);
     if (!lead) return;
+    setLeads((prev) => prev.map((l) => l.id === leadId ? { ...l, status: "Qualified" } : l));
+    logActivity(`Lead qualified — ${lead.name}`, "lead");
+  }
+
+  function handleSubmitForAssessment(leadId: number) {
+    const lead = leads.find((l) => l.id === leadId);
+    if (!lead || lead.status !== "Qualified") return;
     setLeads((prev) => prev.map((l) => l.id === leadId ? { ...l, status: "Assessment" } : l));
     const now = new Date();
     const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric" });
@@ -3241,22 +3541,20 @@ export default function App() {
     logActivity(`Lead submitted for assessment — ${lead.name}`, "assess");
   }
 
-  function handleSubmitAssessment(id: number, notes: string, risk: "Low" | "Medium" | "High") {
+  function handleSubmitAssessment(id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string) {
     const now = new Date();
     const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Submitted", notes, risk, date: dateStr } : a));
+    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Submitted", notes, risk, date: dateStr, ...(document ? { document } : {}) } : a));
     const assessment = assessments.find((a) => a.id === id);
     logActivity(`${assessment?.type} assessment submitted — ${assessment?.leadName}`, "assess");
   }
 
-  function handleApproveAssessment(id: number) {
-    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Approved" } : a));
-    const assessment = assessments.find((a) => a.id === id);
-    logActivity(`Assessment approved — ${assessment?.leadName}`, "deal");
-  }
 
-  function handleRejectAssessment(id: number) {
-    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Rejected" } : a));
+  function handleRejectLead(leadId: number) {
+    const lead = leads.find((l) => l.id === leadId);
+    if (!lead) return;
+    setLeads((prev) => prev.map((l) => l.id === leadId ? { ...l, status: "Closed" } : l));
+    logActivity(`Lead rejected — ${lead.name}`, "lead");
   }
 
   function handleUpdateLeadStatus(leadId: number, status: string) {
@@ -3275,7 +3573,6 @@ export default function App() {
     <NewLeadPanel open={newLeadOpen} onClose={() => setNewLeadOpen(false)} onSave={handleNewLead} />
     <NewUserPanel open={newUserOpen} onClose={() => setNewUserOpen(false)} onSave={handleAddUser} />
     <ConvertLeadPanel lead={convertingLead} onClose={() => setConvertingLead(null)} onConfirm={handleConvertLead} />
-    <ConvertDealPanel deal={convertingDeal} onClose={() => setConvertingDeal(null)} onConfirm={handleDealToProject} />
     <AllocateResourcesPanel project={allocatingProject} resources={resources} onClose={() => setAllocatingProject(null)} onSave={handleAllocateResources} />
     <div className="flex h-screen overflow-hidden" style={{ background: "var(--background)" }}>
       {/* Sidebar */}
@@ -3438,27 +3735,29 @@ export default function App() {
 
         {/* Page content */}
         <div className="px-8 py-8 max-w-6xl">
-          {activeView === "dashboard" && <DashboardView role={role} activityLog={activityLog} users={users} />}
+          {activeView === "dashboard" && <DashboardView role={role} activityLog={activityLog} users={users} leads={leads} deals={deals} assessments={assessments} />}
           {activeView === "leads" && (
             <LeadsView
               leads={leads}
               onNewLead={() => setNewLeadOpen(true)}
               onAssignRep={handleAssignRep}
               onDeleteLead={handleDeleteLead}
-              onConvertLead={(l) => setConvertingLead(l)}
+              onConvertLead={role === "Sales Manager" ? (l) => setConvertingLead(l) : undefined}
+              onRejectLead={role === "Sales Manager" ? handleRejectLead : undefined}
               isSalesRep={role === "Sales Rep"}
               isSalesManager={role === "Sales Manager"}
               repName={userName}
+              onQualifyLead={role === "Sales Rep" ? handleQualifyLead : undefined}
               onSubmitForAssessment={role === "Sales Manager" ? handleSubmitForAssessment : undefined}
               onUpdateStatus={role === "Sales Rep" ? handleUpdateLeadStatus : undefined}
+              onContactLead={role === "Sales Rep" ? handleContactLead : undefined}
+              assessments={assessments}
             />
           )}
           {activeView === "deals" && (
             <DealsView
               deals={deals}
-              onConvertDeal={role === "Sales Manager" ? handleConvertDeal : undefined}
               isSalesRep={role === "Sales Rep"}
-              isSalesManager={role === "Sales Manager"}
             />
           )}
           {activeView === "users" && <UsersView users={users} onAddUser={() => setNewUserOpen(true)} onRemoveUser={handleRemoveUser} />}
@@ -3466,9 +3765,8 @@ export default function App() {
             <AssessmentsView
               assessments={assessments}
               role={role}
+              leads={leads}
               onSubmitAssessment={handleSubmitAssessment}
-              onApprove={handleApproveAssessment}
-              onReject={handleRejectAssessment}
             />
           )}
           {activeView === "resources" && <ResourcesView resources={resources} />}
