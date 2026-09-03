@@ -111,7 +111,8 @@ type AssessmentRecord = {
   id: number;
   leadName: string;
   type: "Technical" | "Financial";
-  status: "Pending" | "In Review" | "Submitted";
+  status: "Pending" | "In Review" | "Submitted" | "Info Required";
+  infoRequest?: string;
   risk: "Low" | "Medium" | "High";
   assessor: string;
   date: string;
@@ -438,7 +439,7 @@ function DashboardView({ role, activityLog, users, leads, deals, assessments }: 
   );
 }
 
-type CommEntry = { id: number; type: "Call" | "Meeting" | "Email"; summary: string; time: string; document?: string; documentData?: string };
+type CommEntry = { id: number; type: "Call" | "Meeting" | "Email" | "Info Response"; summary: string; time: string; document?: string; documentData?: string };
 type FollowUp = { id: number; date: string; time?: string; purpose: string; status: "Upcoming" | "Completed" | "Cancelled" };
 type LeadNote = { id: number; text: string; time: string };
 
@@ -465,6 +466,8 @@ function LeadDetailPanel({
   onQualifyLead,
   onSubmitForAssessment,
   onContactLead,
+  assessments,
+  onInfoResponse,
 }: {
   lead: typeof LEADS[number] | null;
   onClose: () => void;
@@ -473,13 +476,15 @@ function LeadDetailPanel({
   onQualifyLead?: (leadId: number) => void;
   onSubmitForAssessment?: (leadId: number) => void;
   onContactLead?: (leadId: number) => void;
+  assessments?: AssessmentRecord[];
+  onInfoResponse?: (leadName: string) => void;
 }) {
   const [tab, setTab] = useState<"overview" | "activity" | "notes">("overview");
   const [comms, setComms] = useState<CommEntry[]>(() => leadCommsMap[lead?.id ?? 0] ?? []);
   const [followUps, setFollowUps] = useState<FollowUp[]>(() => leadFollowUpsMap[lead?.id ?? 0] ?? []);
   const [notes, setNotes] = useState<LeadNote[]>(() => leadNotesMap[lead?.id ?? 0] ?? []);
 
-  const [newCommType, setNewCommType] = useState<"Call" | "Meeting" | "Email">("Call");
+  const [newCommType, setNewCommType] = useState<"Call" | "Meeting" | "Email" | "Info Response">("Call");
   const [newCommText, setNewCommText] = useState("");
   const [newCommDoc, setNewCommDoc] = useState<string | undefined>(undefined);
   const [newCommDocData, setNewCommDocData] = useState<string | undefined>(undefined);
@@ -500,6 +505,7 @@ function LeadDetailPanel({
       setAddingComm(false);
       setAddingFU(false);
       setNewCommText("");
+      setNewCommType("Call");
       setNewNote("");
     }
   }, [lead?.id]);
@@ -531,6 +537,7 @@ function LeadDetailPanel({
     setNewCommDocData(undefined);
     setAddingComm(false);
     if (lead!.status === "New" && onContactLead) onContactLead(lead!.id);
+    if (entry.type === "Info Response" && onInfoResponse) onInfoResponse(lead!.name);
   }
 
   function addFollowUp() {
@@ -560,7 +567,7 @@ function LeadDetailPanel({
     setNewNote("");
   }
 
-  const commColors: Record<string, string> = { Call: "#1ed760", Meeting: "#1a6fe8", Email: "#a78bfa" };
+  const commColors: Record<string, string> = { Call: "#1ed760", Meeting: "#1a6fe8", Email: "#a78bfa", "Info Response": "#fc4f37" };
   const fuStatusColors: Record<string, string> = { Upcoming: "#f59e0b", Completed: "#1ed760", Cancelled: "#7a7a90" };
   const l = lead as any;
 
@@ -651,6 +658,30 @@ function LeadDetailPanel({
           {/* ── OVERVIEW ── */}
           {tab === "overview" && (
             <>
+              {/* Info Required banners for Sales Rep */}
+              {isSalesRep && assessments && (() => {
+                const infoRequested = assessments.filter((a) => a.leadName === lead.name && a.status === "Info Required" && a.infoRequest);
+                if (infoRequested.length === 0) return null;
+                return (
+                  <div className="flex flex-col gap-2 mb-1">
+                    {infoRequested.map((a) => (
+                      <div key={a.id} className="rounded-xl px-4 py-3 flex gap-3 items-start" style={{ background: "#fc4f3712", border: "1px solid #fc4f3740" }}>
+                        <span className="text-lg shrink-0">⚠️</span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: "#fc4f37" }}>
+                            {a.type} Assessor — Additional Information Required
+                          </p>
+                          <p className="text-sm leading-relaxed" style={{ color: "var(--foreground)" }}>{a.infoRequest}</p>
+                          <p className="text-xs mt-1.5" style={{ color: "var(--muted-foreground)" }}>
+                            Please respond by logging an <span className="font-semibold" style={{ color: "#fc4f37" }}>Info Response</span> in the Interaction Log tab.
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+
               {/* Two-column cards */}
               <div className="grid grid-cols-2 gap-4">
                 {/* Contact Info */}
@@ -779,8 +810,11 @@ function LeadDetailPanel({
               {addingComm && (
                 <div className="rounded-xl p-4 flex flex-col gap-3" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
                   <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#1ed760" }}>Log Interaction</p>
-                  <div className="flex gap-2">
-                    {(["Call", "Meeting", "Email"] as const).map((t) => (
+                  <div className="flex gap-2 flex-wrap">
+                    {(["Call", "Meeting", "Email", "Info Response"] as const).filter((t) => {
+                      if (t !== "Info Response") return true;
+                      return assessments?.some((a) => a.leadName === lead!.name && a.status === "Info Required") ?? false;
+                    }).map((t) => (
                       <button key={t} onClick={() => setNewCommType(t)} className="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all" style={{ background: newCommType === t ? commColors[t] + "20" : "transparent", color: newCommType === t ? commColors[t] : "var(--muted-foreground)", border: newCommType === t ? `1px solid ${commColors[t]}40` : "1px solid var(--border)" }}>
                         {t}
                       </button>
@@ -962,6 +996,7 @@ function LeadsView({
   onUpdateStatus,
   onContactLead,
   assessments,
+  onInfoResponse,
 }: {
   leads: typeof LEADS;
   onNewLead: () => void;
@@ -977,6 +1012,7 @@ function LeadsView({
   onUpdateStatus?: (leadId: number, status: string) => void;
   onContactLead?: (leadId: number) => void;
   assessments?: AssessmentRecord[];
+  onInfoResponse?: (leadName: string) => void;
 }) {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -1009,7 +1045,7 @@ function LeadsView({
 
   return (
     <>
-    <LeadDetailPanel lead={detailLead} onClose={() => setDetailLead(null)} isSalesRep={isSalesRep} isSalesManager={isSalesManager} onQualifyLead={onQualifyLead} onSubmitForAssessment={onSubmitForAssessment} onContactLead={onContactLead} />
+    <LeadDetailPanel lead={detailLead} onClose={() => setDetailLead(null)} isSalesRep={isSalesRep} isSalesManager={isSalesManager} onQualifyLead={onQualifyLead} onSubmitForAssessment={onSubmitForAssessment} onContactLead={onContactLead} assessments={assessments} onInfoResponse={onInfoResponse} />
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
@@ -1818,11 +1854,13 @@ function AssessmentsView({
   role,
   leads = [],
   onSubmitAssessment,
+  onRequestInfo,
 }: {
   assessments: AssessmentRecord[];
   role: Role;
   leads?: typeof LEADS;
   onSubmitAssessment: (id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string, documentData?: string) => void;
+  onRequestInfo: (id: number, request: string) => void;
 }) {
   const [submittingId, setSubmittingId] = useState<number | null>(null);
   const [notes, setNotes] = useState("");
@@ -1831,6 +1869,8 @@ function AssessmentsView({
   const [docData, setDocData] = useState<string | undefined>(undefined);
   const [search, setSearch] = useState("");
   const [logLead, setLogLead] = useState<typeof LEADS[number] | null>(null);
+  const [requestingId, setRequestingId] = useState<number | null>(null);
+  const [infoRequestText, setInfoRequestText] = useState("");
   const docInputRef = useRef<HTMLInputElement>(null);
   const logOverlayRef = useRef<HTMLDivElement>(null);
 
@@ -1841,7 +1881,7 @@ function AssessmentsView({
   const riskColor: Record<string, string> = { High: "#fc4f37", Medium: "#f59e0b", Low: "#1ed760" };
   const typeColor: Record<string, string> = { Technical: "#1a6fe8", Financial: "#a78bfa" };
   const statusColor: Record<string, string> = {
-    Pending: "#f59e0b", "In Review": "#a78bfa", Submitted: "#1a6fe8",
+    Pending: "#f59e0b", "In Review": "#a78bfa", Submitted: "#1a6fe8", "Info Required": "#fc4f37",
   };
 
   const visible = assessments.filter((a) => {
@@ -1855,7 +1895,7 @@ function AssessmentsView({
     : visible;
 
   const title = isTechLead ? "Technical Assessments" : isFinance ? "Financial Assessments" : "All Assessments";
-  const pendingCount = visible.filter((a) => a.status === "Pending" || a.status === "In Review").length;
+  const pendingCount = visible.filter((a) => a.status === "Pending" || a.status === "In Review" || a.status === "Info Required").length;
 
   const companiesWithAssessments: string[] = isManager
     ? Array.from(new Set(filtered.map((a) => a.leadName)))
@@ -1964,6 +2004,7 @@ function AssessmentsView({
           const pendingLabels: string[] = [];
           if (!techDone) pendingLabels.push("Technical assessment pending");
           if (!finDone) pendingLabels.push("Financial assessment pending");
+          const infoRequiredAssessments = companyAssessments.filter((a) => a.status === "Info Required");
 
           return (
             <div
@@ -1973,13 +2014,31 @@ function AssessmentsView({
             >
               <div className="flex items-start justify-between gap-3 mb-4 flex-wrap">
                 <div>
-                  <h3 className="font-semibold text-base">{company}</h3>
+                  <button
+                    onClick={() => { const l = leads?.find((x) => x.name === company); if (l) setLogLead(l); }}
+                    className="font-semibold text-base text-left hover:underline underline-offset-2 transition-all"
+                    style={{ color: "var(--foreground)" }}
+                    title="View interaction log"
+                  >{company}</button>
                   {pendingLabels.length > 0 && !bothDone && (
                     <div className="flex flex-wrap gap-1.5 mt-1.5">
                       {pendingLabels.map((lbl) => (
                         <span key={lbl} className="text-xs px-2 py-0.5 rounded-full" style={{ background: "#f59e0b15", color: "#f59e0b", border: "1px solid #f59e0b30" }}>
                           {lbl}
                         </span>
+                      ))}
+                    </div>
+                  )}
+                  {infoRequiredAssessments.length > 0 && (
+                    <div className="flex flex-col gap-1 mt-1.5">
+                      {infoRequiredAssessments.map((a) => (
+                        <div key={a.id} className="flex items-start gap-1.5 px-2.5 py-1.5 rounded-lg" style={{ background: "#fc4f3712", border: "1px solid #fc4f3730" }}>
+                          <span className="text-xs shrink-0">⚠️</span>
+                          <div>
+                            <span className="text-xs font-semibold" style={{ color: "#fc4f37" }}>{a.type} assessor needs info: </span>
+                            <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{a.infoRequest}</span>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -2069,8 +2128,42 @@ function AssessmentsView({
               </div>
             )}
 
-            {(isTechLead || isFinance) && (a.status === "Pending" || a.status === "In Review") && (
-              submittingId === a.id ? (
+            {/* Info request banner on the card */}
+            {(isTechLead || isFinance) && a.status === "Info Required" && a.infoRequest && (
+              <div className="mt-3 px-3 py-2.5 rounded-lg flex gap-2 items-start" style={{ background: "#fc4f3715", border: "1px solid #fc4f3730" }}>
+                <span className="text-sm shrink-0">⚠️</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-bold mb-0.5" style={{ color: "#fc4f37" }}>Info requested from Sales Rep</p>
+                  <p className="text-xs leading-relaxed" style={{ color: "var(--muted-foreground)" }}>{a.infoRequest}</p>
+                </div>
+              </div>
+            )}
+
+            {(isTechLead || isFinance) && (a.status === "Pending" || a.status === "In Review" || a.status === "Info Required") && (
+              requestingId === a.id ? (
+                <div className="flex flex-col gap-2 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "#fc4f37" }}>Request Additional Information</p>
+                  <textarea
+                    placeholder="Describe what additional information you need from the Sales Rep…"
+                    value={infoRequestText}
+                    onChange={(e) => setInfoRequestText(e.target.value)}
+                    rows={3}
+                    className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-none"
+                    style={{ background: "var(--muted)", border: "1px solid var(--border)", color: "var(--foreground)" }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#fc4f37")}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")}
+                  />
+                  <div className="flex gap-2 justify-end">
+                    <button onClick={() => { setRequestingId(null); setInfoRequestText(""); }} className="px-3 py-1.5 text-xs rounded-lg" style={{ color: "var(--muted-foreground)" }}>Cancel</button>
+                    <button
+                      onClick={() => { onRequestInfo(a.id, infoRequestText.trim()); setRequestingId(null); setInfoRequestText(""); }}
+                      disabled={!infoRequestText.trim()}
+                      className="px-4 py-1.5 text-xs rounded-lg font-semibold disabled:opacity-50"
+                      style={{ background: "#fc4f37", color: "#fff" }}
+                    >Send Request</button>
+                  </div>
+                </div>
+              ) : submittingId === a.id ? (
                 <div className="flex flex-col gap-3 mt-3 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
                   <textarea
                     placeholder="Add assessment notes…"
@@ -2142,13 +2235,22 @@ function AssessmentsView({
                   </div>
                 </div>
               ) : (
-                <button
-                  onClick={() => { setSubmittingId(a.id); setNotes(a.notes); setRisk(a.risk); setDocName(undefined); }}
-                  className="mt-2 px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
-                  style={{ background: "#1a6fe815", color: "#60a5fa", border: "1px solid #1a6fe830" }}
-                >
-                  {a.status === "In Review" ? "Continue Assessment" : "Start Assessment"}
-                </button>
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  <button
+                    onClick={() => { setSubmittingId(a.id); setNotes(a.notes); setRisk(a.risk); setDocName(undefined); }}
+                    className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
+                    style={{ background: "#1a6fe815", color: "#60a5fa", border: "1px solid #1a6fe830" }}
+                  >
+                    {a.status === "In Review" || a.status === "Info Required" ? "Continue Assessment" : "Start Assessment"}
+                  </button>
+                  <button
+                    onClick={() => { setRequestingId(a.id); setInfoRequestText(a.infoRequest ?? ""); }}
+                    className="px-4 py-2 rounded-lg text-sm font-semibold transition-opacity hover:opacity-80"
+                    style={{ background: "#fc4f3715", color: "#fc4f37", border: "1px solid #fc4f3730" }}
+                  >
+                    Request Info
+                  </button>
+                </div>
               )
             )}
           </div>
@@ -2192,8 +2294,8 @@ function AssessmentsView({
               <button onClick={() => setLogLead(null)} className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#ffffff10]" style={{ color: "var(--muted-foreground)" }}>✕</button>
             </div>
 
-            {/* Lead value — shown for Finance Officer */}
-            {isFinance && (
+            {/* Lead value — Finance Officer + Sales Manager */}
+            {(isFinance || isManager) && (
               <div className="mx-6 mt-5 px-4 py-3 rounded-xl flex items-center justify-between" style={{ background: "#a78bfa12", border: "1px solid #a78bfa30" }}>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: "#a78bfa" }}>Lead Value</p>
@@ -2202,6 +2304,29 @@ function AssessmentsView({
                 <span className="text-xl font-bold font-mono" style={{ color: "var(--foreground)" }}>{logLead.value}</span>
               </div>
             )}
+
+            {/* Assessment documents — Sales Manager only */}
+            {isManager && (() => {
+              const companyAssessments = assessments.filter((a) => a.leadName === logLead.name && a.document);
+              if (companyAssessments.length === 0) return null;
+              return (
+                <div className="mx-6 mt-4 flex flex-col gap-2">
+                  <p className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Assessment Documents</p>
+                  {companyAssessments.map((a) => (
+                    <div key={a.id} className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/><path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                      <span className="text-xs shrink-0 font-medium" style={{ color: a.type === "Technical" ? "#60a5fa" : "#a78bfa" }}>{a.type}</span>
+                      <span className="text-xs flex-1 truncate" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+                      {a.documentData && (
+                        <a href={a.documentData} download={a.document} className="text-xs font-semibold shrink-0 hover:opacity-70" style={{ color: "#60a5fa" }}>
+                          Download
+                        </a>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
 
             {/* Contact quick-ref */}
             <div className="mx-6 mt-4 px-4 py-3 rounded-xl" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
@@ -2215,8 +2340,8 @@ function AssessmentsView({
               <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "var(--muted-foreground)" }}>Interaction Log</p>
               {(() => {
                 const comms = leadCommsMap[logLead.id] ?? [];
-                const typeIcon: Record<string, string> = { Call: "📞", Meeting: "🤝", Email: "✉️" };
-                const typeColor: Record<string, string> = { Call: "#1ed760", Meeting: "#1a6fe8", Email: "#a78bfa" };
+                const typeIcon: Record<string, string> = { Call: "📞", Meeting: "🤝", Email: "✉️", "Info Response": "📋" };
+                const typeColor: Record<string, string> = { Call: "#1ed760", Meeting: "#1a6fe8", Email: "#a78bfa", "Info Response": "#fc4f37" };
                 if (comms.length === 0) {
                   return (
                     <div className="py-10 text-center" style={{ color: "var(--muted-foreground)" }}>
@@ -3656,6 +3781,21 @@ export default function App() {
   }
 
 
+  function handleInfoResponse(leadName: string) {
+    setAssessments((prev) => prev.map((a) =>
+      a.leadName === leadName && a.status === "Info Required"
+        ? { ...a, status: "In Review", infoRequest: undefined }
+        : a
+    ));
+    logActivity(`Additional info provided — ${leadName}`, "assess");
+  }
+
+  function handleRequestInfo(id: number, request: string) {
+    const assessment = assessments.find((a) => a.id === id);
+    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Info Required", infoRequest: request } : a));
+    logActivity(`Additional info requested — ${assessment?.leadName} (${assessment?.type})`, "assess");
+  }
+
   function handleRejectLead(leadId: number) {
     const lead = leads.find((l) => l.id === leadId);
     if (!lead) return;
@@ -3858,6 +3998,7 @@ export default function App() {
               onUpdateStatus={role === "Sales Rep" ? handleUpdateLeadStatus : undefined}
               onContactLead={role === "Sales Rep" ? handleContactLead : undefined}
               assessments={assessments}
+              onInfoResponse={role === "Sales Rep" ? handleInfoResponse : undefined}
             />
           )}
           {activeView === "deals" && (
@@ -3873,6 +4014,7 @@ export default function App() {
               role={role}
               leads={leads}
               onSubmitAssessment={handleSubmitAssessment}
+              onRequestInfo={handleRequestInfo}
             />
           )}
           {activeView === "resources" && <ResourcesView resources={resources} />}
