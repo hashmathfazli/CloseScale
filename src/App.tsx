@@ -437,13 +437,24 @@ function DashboardView({ role, activityLog, users, leads, deals, assessments }: 
   );
 }
 
-type CommEntry = { id: number; type: "Call" | "Meeting" | "Email"; summary: string; time: string };
-type FollowUp = { id: number; date: string; purpose: string; status: "Upcoming" | "Completed" | "Cancelled" };
+type CommEntry = { id: number; type: "Call" | "Meeting" | "Email"; summary: string; time: string; document?: string; documentData?: string };
+type FollowUp = { id: number; date: string; time?: string; purpose: string; status: "Upcoming" | "Completed" | "Cancelled" };
 type LeadNote = { id: number; text: string; time: string };
 
-const leadCommsMap: Record<number, CommEntry[]> = {};
-const leadFollowUpsMap: Record<number, FollowUp[]> = {};
-const leadNotesMap: Record<number, LeadNote[]> = {};
+// ── localStorage helpers ──────────────────────────────────────────────────────
+function lsGet<T>(key: string, fallback: T): T {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? (JSON.parse(v) as T) : fallback;
+  } catch { return fallback; }
+}
+function lsSet(key: string, value: unknown) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch {}
+}
+
+const leadCommsMap: Record<number, CommEntry[]>    = lsGet("altriumComms", {});
+const leadFollowUpsMap: Record<number, FollowUp[]> = lsGet("altriumFollowUps", {});
+const leadNotesMap: Record<number, LeadNote[]>     = lsGet("altriumNotes", {});
 
 function LeadDetailPanel({
   lead,
@@ -469,10 +480,14 @@ function LeadDetailPanel({
 
   const [newCommType, setNewCommType] = useState<"Call" | "Meeting" | "Email">("Call");
   const [newCommText, setNewCommText] = useState("");
+  const [newCommDoc, setNewCommDoc] = useState<string | undefined>(undefined);
+  const [newCommDocData, setNewCommDocData] = useState<string | undefined>(undefined);
   const [addingComm, setAddingComm] = useState(false);
   const [newFUDate, setNewFUDate] = useState("");
+  const [newFUTime, setNewFUTime] = useState("");
   const [newFUPurpose, setNewFUPurpose] = useState("");
   const [addingFU, setAddingFU] = useState(false);
+  const commDocRef = useRef<HTMLInputElement>(null);
   const [newNote, setNewNote] = useState("");
 
   useEffect(() => {
@@ -505,29 +520,33 @@ function LeadDetailPanel({
 
   function addComm() {
     if (!newCommText.trim()) return;
-    const entry: CommEntry = { id: Date.now(), type: newCommType, summary: newCommText.trim(), time: nowStr() };
+    const entry: CommEntry = { id: Date.now(), type: newCommType, summary: newCommText.trim(), time: nowStr(), ...(newCommDoc ? { document: newCommDoc, documentData: newCommDocData } : {}) };
     const updated = [entry, ...comms];
     setComms(updated);
     leadCommsMap[lead!.id] = updated;
+    lsSet("altriumComms", leadCommsMap);
     setNewCommText("");
+    setNewCommDoc(undefined);
+    setNewCommDocData(undefined);
     setAddingComm(false);
-    // Auto-advance New → Contacted on first logged interaction
     if (lead!.status === "New" && onContactLead) onContactLead(lead!.id);
   }
 
   function addFollowUp() {
     if (!newFUDate || !newFUPurpose.trim()) return;
-    const fu: FollowUp = { id: Date.now(), date: newFUDate, purpose: newFUPurpose.trim(), status: "Upcoming" };
+    const fu: FollowUp = { id: Date.now(), date: newFUDate, time: newFUTime || undefined, purpose: newFUPurpose.trim(), status: "Upcoming" };
     const updated = [fu, ...followUps];
     setFollowUps(updated);
     leadFollowUpsMap[lead!.id] = updated;
-    setNewFUDate(""); setNewFUPurpose(""); setAddingFU(false);
+    lsSet("altriumFollowUps", leadFollowUpsMap);
+    setNewFUDate(""); setNewFUTime(""); setNewFUPurpose(""); setAddingFU(false);
   }
 
   function updateFUStatus(id: number, status: FollowUp["status"]) {
     const updated = followUps.map((f) => f.id === id ? { ...f, status } : f);
     setFollowUps(updated);
     leadFollowUpsMap[lead!.id] = updated;
+    lsSet("altriumFollowUps", leadFollowUpsMap);
   }
 
   function addNote() {
@@ -536,6 +555,7 @@ function LeadDetailPanel({
     const updated = [entry, ...notes];
     setNotes(updated);
     leadNotesMap[lead!.id] = updated;
+    lsSet("altriumNotes", leadNotesMap);
     setNewNote("");
   }
 
@@ -726,12 +746,16 @@ function LeadDetailPanel({
                     <div className="grid grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Date</label>
-                        <input type="date" value={newFUDate} onChange={(e) => setNewFUDate(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)", colorScheme: "dark" }} />
+                        <input type="date" value={newFUDate} min={new Date().toISOString().split("T")[0]} onChange={(e) => setNewFUDate(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)", colorScheme: "dark" }} />
                       </div>
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Purpose</label>
-                        <input placeholder="e.g. Demo call…" value={newFUPurpose} onChange={(e) => setNewFUPurpose(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)" }} />
+                        <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Time <span style={{ color: "#7a7a90", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>(optional)</span></label>
+                        <input type="time" value={newFUTime} onChange={(e) => setNewFUTime(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)", colorScheme: "dark" }} />
                       </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--muted-foreground)" }}>Purpose</label>
+                      <input placeholder="e.g. Demo call…" value={newFUPurpose} onChange={(e) => setNewFUPurpose(e.target.value)} className="w-full px-3 py-2 rounded-lg text-sm outline-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)" }} />
                     </div>
                     <div className="flex gap-2 justify-end">
                       <button onClick={() => setAddingFU(false)} className="px-3 py-1.5 text-xs rounded-lg" style={{ color: "var(--muted-foreground)" }}>Cancel</button>
@@ -762,8 +786,29 @@ function LeadDetailPanel({
                     ))}
                   </div>
                   <textarea placeholder="Summarise the interaction…" value={newCommText} onChange={(e) => setNewCommText(e.target.value)} rows={3} className="w-full px-3 py-2 rounded-lg text-sm outline-none resize-none" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--foreground)" }} onFocus={(e) => (e.currentTarget.style.borderColor = "var(--primary)")} onBlur={(e) => (e.currentTarget.style.borderColor = "var(--border)")} />
+                  {/* Document attach */}
+                  <input ref={commDocRef} type="file" className="hidden" onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setNewCommDoc(file.name);
+                    const reader = new FileReader();
+                    reader.onload = (ev) => setNewCommDocData(ev.target?.result as string);
+                    reader.readAsDataURL(file);
+                  }} />
+                  {newCommDoc ? (
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: "var(--card)", border: "1px solid #1ed76030" }}>
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#1ed760" strokeWidth="1.2" strokeLinejoin="round"/><path d="M9 1v4h4" stroke="#1ed760" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                      <span className="text-xs flex-1 truncate" style={{ color: "#1ed760" }}>{newCommDoc}</span>
+                      <button onClick={() => { setNewCommDoc(undefined); setNewCommDocData(undefined); if (commDocRef.current) commDocRef.current.value = ""; }} className="text-xs" style={{ color: "var(--muted-foreground)" }}>✕</button>
+                    </div>
+                  ) : (
+                    <button onClick={() => commDocRef.current?.click()} className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs w-fit transition-opacity hover:opacity-80" style={{ background: "var(--card)", border: "1px solid var(--border)", color: "var(--muted-foreground)" }}>
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 1h5.5L13 4.5V15H4V1z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M9 1v4h4" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/><path d="M8 7v4M6 9l2-2 2 2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      Attach document (optional)
+                    </button>
+                  )}
                   <div className="flex gap-2 justify-end">
-                    <button onClick={() => setAddingComm(false)} className="px-3 py-1.5 text-xs rounded-lg" style={{ color: "var(--muted-foreground)" }}>Cancel</button>
+                    <button onClick={() => { setAddingComm(false); setNewCommDoc(undefined); setNewCommDocData(undefined); }} className="px-3 py-1.5 text-xs rounded-lg" style={{ color: "var(--muted-foreground)" }}>Cancel</button>
                     <button onClick={addComm} disabled={!newCommText.trim()} className="px-4 py-1.5 text-xs rounded-lg font-semibold disabled:opacity-50" style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}>Log</button>
                   </div>
                 </div>
@@ -779,7 +824,10 @@ function LeadDetailPanel({
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <p className="text-sm font-semibold">{f.purpose}</p>
-                            <p className="text-xs mt-0.5 font-mono" style={{ color: "var(--muted-foreground)" }}>{new Date(f.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+                            <p className="text-xs mt-0.5 font-mono" style={{ color: "var(--muted-foreground)" }}>
+                              {new Date(f.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                              {f.time && <span className="ml-2">@ {f.time}</span>}
+                            </p>
                           </div>
                           {canEdit && (
                             <div className="flex gap-1.5 shrink-0">
@@ -806,6 +854,22 @@ function LeadDetailPanel({
                           <span className="text-xs ml-auto" style={{ color: "var(--muted-foreground)" }}>{c.time}</span>
                         </div>
                         <p className="text-sm">{c.summary}</p>
+                        {c.document && (
+                          <div className="flex items-center gap-2 mt-2 px-2.5 py-1.5 rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/><path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                            <span className="text-xs flex-1 truncate" style={{ color: "var(--muted-foreground)" }}>{c.document}</span>
+                            {c.documentData && (
+                              <a
+                                href={c.documentData}
+                                download={c.document}
+                                className="text-xs font-semibold shrink-0 transition-opacity hover:opacity-70"
+                                style={{ color: "#60a5fa" }}
+                              >
+                                Download
+                              </a>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -822,7 +886,10 @@ function LeadDetailPanel({
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <p className="text-sm font-semibold">{f.purpose}</p>
-                            <p className="text-xs mt-0.5 font-mono" style={{ color: "var(--muted-foreground)" }}>{new Date(f.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+                            <p className="text-xs mt-0.5 font-mono" style={{ color: "var(--muted-foreground)" }}>
+                              {new Date(f.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                              {f.time && <span className="ml-2">@ {f.time}</span>}
+                            </p>
                           </div>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium shrink-0" style={{ background: fuStatusColors[f.status] + "20", color: fuStatusColors[f.status] }}>{f.status}</span>
                         </div>
@@ -2151,6 +2218,17 @@ function AssessmentsView({
                             <span className="text-xs font-mono" style={{ color: "var(--muted-foreground)" }}>{c.time}</span>
                           </div>
                           <p className="text-sm leading-snug">{c.summary}</p>
+                          {c.document && (
+                            <div className="flex items-center gap-2 mt-2 px-2.5 py-1.5 rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
+                              <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/><path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                              <span className="text-xs flex-1 truncate" style={{ color: "var(--muted-foreground)" }}>{c.document}</span>
+                              {c.documentData && (
+                                <a href={c.documentData} download={c.document} className="text-xs font-semibold shrink-0 hover:opacity-70" style={{ color: "#60a5fa" }}>
+                                  Download
+                                </a>
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -3409,14 +3487,16 @@ export default function App() {
   // ── all hooks unconditionally, in stable order ─────────────────────────────
   const [authed, setAuthed] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
-  const [activityLog, setActivityLog] = useState<{ time: string; event: string; type: string }[]>([
-    { time: "2h ago",     event: "Lead qualified — Orbit Retail Ltd",             type: "lead" },
-    { time: "4h ago",     event: "Deal moved to Negotiation — NexGen Pharma",     type: "deal" },
-    { time: "Yesterday",  event: "Technical assessment submitted — Meridian ERP", type: "assess" },
-    { time: "Yesterday",  event: "New user onboarded — Senula Silva",             type: "user" },
-    { time: "Aug 17",     event: "Project created — CloudBridge Migration",       type: "project" },
-    { time: "Aug 16",     event: "Deal closed won — Apex DevOps Pipeline",        type: "deal" },
-  ]);
+  const [activityLog, setActivityLog] = useState<{ time: string; event: string; type: string }[]>(() =>
+    lsGet("altriumActivityLog", [
+      { time: "2h ago",     event: "Lead qualified — Orbit Retail Ltd",             type: "lead" },
+      { time: "4h ago",     event: "Deal moved to Negotiation — NexGen Pharma",     type: "deal" },
+      { time: "Yesterday",  event: "Technical assessment submitted — Meridian ERP", type: "assess" },
+      { time: "Yesterday",  event: "New user onboarded — Senula Silva",             type: "user" },
+      { time: "Aug 17",     event: "Project created — CloudBridge Migration",       type: "project" },
+      { time: "Aug 16",     event: "Deal closed won — Apex DevOps Pipeline",        type: "deal" },
+    ])
+  );
   const [userName, setUserName] = useState("Yaqoob Sadikeen");
   const [role, setRole] = useState<Role>("Sales Manager");
   const [view, setView] = useState<View>("dashboard");
@@ -3424,12 +3504,18 @@ export default function App() {
   const [newUserOpen, setNewUserOpen] = useState(false);
   const [convertingLead, setConvertingLead] = useState<typeof LEADS[number] | null>(null);
   const [allocatingProject, setAllocatingProject] = useState<typeof PROJECTS[number] | null>(null);
-  const [leads, setLeads] = useState(LEADS);
-  const [deals, setDeals] = useState(DEALS);
+  const [leads, setLeads] = useState(() => lsGet("altriumLeads", LEADS));
+  const [deals, setDeals] = useState(() => lsGet("altriumDeals", DEALS));
   const [projects, setProjects] = useState(PROJECTS);
-  const [users, setUsers] = useState(USERS);
+  const [users, setUsers] = useState(() => lsGet("altriumUsers", USERS));
   const [resources, setResources] = useState(RESOURCES);
-  const [assessments, setAssessments] = useState<AssessmentRecord[]>(ASSESSMENTS);
+  const [assessments, setAssessments] = useState<AssessmentRecord[]>(() => lsGet("altriumAssessments", ASSESSMENTS));
+
+  useEffect(() => { lsSet("altriumLeads", leads); }, [leads]);
+  useEffect(() => { lsSet("altriumDeals", deals); }, [deals]);
+  useEffect(() => { lsSet("altriumUsers", users); }, [users]);
+  useEffect(() => { lsSet("altriumAssessments", assessments); }, [assessments]);
+  useEffect(() => { lsSet("altriumActivityLog", activityLog); }, [activityLog]);
 
   // const (not function declaration) so closure is never ambiguous
   const logActivity = (event: string, type: string) => {
