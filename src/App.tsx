@@ -117,6 +117,7 @@ type AssessmentRecord = {
   date: string;
   notes: string;
   document?: string;
+  documentData?: string;
 };
 
 const ASSESSMENTS: AssessmentRecord[] = [
@@ -1821,12 +1822,13 @@ function AssessmentsView({
   assessments: AssessmentRecord[];
   role: Role;
   leads?: typeof LEADS;
-  onSubmitAssessment: (id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string) => void;
+  onSubmitAssessment: (id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string, documentData?: string) => void;
 }) {
   const [submittingId, setSubmittingId] = useState<number | null>(null);
   const [notes, setNotes] = useState("");
   const [risk, setRisk] = useState<"Low" | "Medium" | "High">("Low");
   const [docName, setDocName] = useState<string | undefined>(undefined);
+  const [docData, setDocData] = useState<string | undefined>(undefined);
   const [search, setSearch] = useState("");
   const [logLead, setLogLead] = useState<typeof LEADS[number] | null>(null);
   const docInputRef = useRef<HTMLInputElement>(null);
@@ -1863,6 +1865,7 @@ function AssessmentsView({
     setSubmittingId(null);
     setNotes("");
     setDocName(undefined);
+    setDocData(undefined);
   }
 
   function AssessmentRow({ a }: { a: AssessmentRecord }) {
@@ -1892,12 +1895,17 @@ function AssessmentsView({
         )}
         {/* Document chip for Sales Manager */}
         {isManager && a.document && (
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2 mt-1 px-2.5 py-1.5 rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
             <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
               <path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
               <path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
             </svg>
-            <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+            <span className="text-xs flex-1 truncate" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+            {a.documentData && (
+              <a href={a.documentData} download={a.document} className="text-xs font-semibold shrink-0 hover:opacity-70" style={{ color: "#60a5fa" }}>
+                Download
+              </a>
+            )}
           </div>
         )}
       </div>
@@ -2047,12 +2055,17 @@ function AssessmentsView({
               </p>
             )}
             {a.document && (
-              <div className="flex items-center gap-2 mb-3 px-1">
+              <div className="flex items-center gap-2 mb-3 px-2.5 py-1.5 rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)" }}>
                 <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
                   <path d="M4 1h5.5L13 4.5V15H4V1z" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
                   <path d="M9 1v4h4" stroke="#7a7a90" strokeWidth="1.2" strokeLinejoin="round"/>
                 </svg>
-                <span className="text-xs" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+                <span className="text-xs flex-1 truncate" style={{ color: "var(--muted-foreground)" }}>{a.document}</span>
+                {a.documentData && (
+                  <a href={a.documentData} download={a.document} className="text-xs font-semibold shrink-0 hover:opacity-70" style={{ color: "#60a5fa" }}>
+                    Download
+                  </a>
+                )}
               </div>
             )}
 
@@ -2075,7 +2088,14 @@ function AssessmentsView({
                     type="file"
                     accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt"
                     className="hidden"
-                    onChange={(e) => setDocName(e.target.files?.[0]?.name)}
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setDocName(file.name);
+                      const reader = new FileReader();
+                      reader.onload = (ev) => setDocData(ev.target?.result as string);
+                      reader.readAsDataURL(file);
+                    }}
                   />
                   <button
                     onClick={() => docInputRef.current?.click()}
@@ -2090,7 +2110,7 @@ function AssessmentsView({
                     {docName ? docName : "Attach document (optional)"}
                     {docName && (
                       <span
-                        onClick={(e) => { e.stopPropagation(); setDocName(undefined); }}
+                        onClick={(e) => { e.stopPropagation(); setDocName(undefined); setDocData(undefined); }}
                         className="ml-1 opacity-60 hover:opacity-100"
                       >✕</span>
                     )}
@@ -2111,7 +2131,7 @@ function AssessmentsView({
                         Cancel
                       </button>
                       <button
-                        onClick={() => { onSubmitAssessment(a.id, notes, risk, docName); cancelSubmit(); }}
+                        onClick={() => { onSubmitAssessment(a.id, notes, risk, docName, docData); cancelSubmit(); }}
                         disabled={!notes.trim()}
                         className="px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50"
                         style={{ background: "var(--secondary)", color: "#fff" }}
@@ -3627,10 +3647,10 @@ export default function App() {
     logActivity(`Lead submitted for assessment — ${lead.name}`, "assess");
   }
 
-  function handleSubmitAssessment(id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string) {
+  function handleSubmitAssessment(id: number, notes: string, risk: "Low" | "Medium" | "High", document?: string, documentData?: string) {
     const now = new Date();
     const dateStr = now.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Submitted", notes, risk, date: dateStr, ...(document ? { document } : {}) } : a));
+    setAssessments((prev) => prev.map((a) => a.id === id ? { ...a, status: "Submitted", notes, risk, date: dateStr, ...(document ? { document, documentData } : {}) } : a));
     const assessment = assessments.find((a) => a.id === id);
     logActivity(`${assessment?.type} assessment submitted — ${assessment?.leadName}`, "assess");
   }
